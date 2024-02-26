@@ -11,25 +11,42 @@ class MoviesVC: BaseVC, MoviesView {
 
     // Global
     let collectionViewCellID = "collectionViewCellID"
-    //var tvShowsList = [TVShow]()
-    //let presenter = TVShowsPresenter()
+    var tvShowsList = [Movie]()
     
-    // Views
-    var scFilters: UISegmentedControl!
-    var gridCollectionView: UICollectionView!
+    
+    lazy var scFilters: UISegmentedControl = {
+        let filtersSegments = UISegmentedControl()
+        filtersSegments.selectedSegmentIndex = 0
+        filtersSegments.selectedSegmentTintColor = .customGray
+        filtersSegments.backgroundColor = .lightLayer
+        return filtersSegments
+    }()
+    
+    lazy var gridCollectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .vertical
+        flowLayout.minimumLineSpacing = 8
+        flowLayout.minimumInteritemSpacing = 4
+        let moviesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        moviesCollectionView.backgroundColor = .clear
+        moviesCollectionView.register(MoviesViewCell.self, forCellWithReuseIdentifier: self.collectionViewCellID)
+        //moviesCollectionView.delegate = self
+        //moviesCollectionView.dataSource = self
+        moviesCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        return moviesCollectionView
+    }()
+
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.presenter.initialize(view: self)
+        renderUI(filters: ["Now Playing", "Popular", "Top Rated", "Upcoming"])
     }
     
     func renderUI(filters: [String]) {
         // Creates menu action
-        /*var customRightAction = NavbarActionDto()
-        customRightAction.iconName = "ic_menu"
-        customRightAction.action = #selector(navbarMenu)
         
-        self.setNavigationBar(title: "TV Shows", customRight: customRightAction)
+        self.setNavigationBar(title: "Movies")
         self.configureContentView()
         
         // DEFINITION
@@ -58,7 +75,7 @@ class MoviesVC: BaseVC, MoviesView {
         ])
 
         // Next render
-        self.presenter.retreieveTVShows(filter: .popular)*/
+        //self.presenter.retreieveTVShows(filter: .popular)
     }
     
     func renderTVShows() {
@@ -130,20 +147,20 @@ class MoviesVC: BaseVC, MoviesView {
         self.present(actionAlert, animated: true, completion: nil)*/
     }
 }
-/*
-extension TVShowsVC : UICollectionViewDataSource {
+
+extension MoviesVC : UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.tvShowsList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.collectionViewCellID, for: indexPath) as! TVShowViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.collectionViewCellID, for: indexPath) as! MoviesViewCell
         cell.set(item: self.tvShowsList[indexPath.row])
         return cell
     }
 }
 
-extension TVShowsVC: UICollectionViewDelegateFlowLayout {
+extension MoviesVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 2.0, left: 0, bottom: 2.0, right: 0)
     }
@@ -154,4 +171,14 @@ extension TVShowsVC: UICollectionViewDelegateFlowLayout {
     }
 
 }
-*/
+
+
+
+
+
+import SwiftUI
+struct HomePreviews: PreviewProvider {
+    static var previews: some View {
+        GenericViewControllerPreview({ MoviesVC() }).previewDevice(.init(stringLiteral: "iPhone 11"))
+    }
+}

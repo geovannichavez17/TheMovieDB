@@ -15,4 +15,9 @@ class MoviesCoordinator: BaseCoordinator {
         //homeVC.hideNavbar = true
         navigationController!.pushViewController(homeVC, animated: animated ?? true)
     }
+    
+    func navigateToDetails() {
+        let movieDetailsVC = MovieDetailsVC()
+        navigationController?.pushViewController(movieDetailsVC, animated: true)
+    }
 }

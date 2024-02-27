@@ -29,6 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Inicialización de Coordinator
         coordinator = MoviesCoordinator(navController: navigationController)
         coordinator.start(animated: true)
+        //coordinator.navigateToDetails()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

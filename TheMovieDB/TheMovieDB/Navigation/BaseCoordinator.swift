@@ -7,6 +7,12 @@
 
 import UIKit
 
+protocol CoordinatorProtocol {
+    func addChildCoordinator(_ coordinator: CoordinatorProtocol)
+    func removeAllChildCoordinatorsWith<T>(type: T.Type)
+    func removeAllChildCoordinators()
+}
+
 class BaseCoordinator: CoordinatorProtocol {
     
     private(set) var childCoordinators: [CoordinatorProtocol] = []

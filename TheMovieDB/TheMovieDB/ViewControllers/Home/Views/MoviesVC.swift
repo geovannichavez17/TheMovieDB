@@ -12,9 +12,7 @@ class MoviesVC: BaseVC, MoviesView {
     // Global
     let collectionViewCellID = "collectionViewCellID"
     var tvShowsList = [Movie]()
-    
-    var viewModel: MoviesViewModel = MoviesViewModel()
-    
+    var viewModel: MoviesViewModel?
     
     lazy var scFilters: UISegmentedControl = {
         let filtersSegments = UISegmentedControl()
@@ -38,8 +36,10 @@ class MoviesVC: BaseVC, MoviesView {
         return moviesCollectionView
     }()
 
+    func set(viewModel: MoviesViewModel) {
+        self.viewModel = viewModel
+    }
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         renderUI(filters: ["Now Playing", "Popular", "Top Rated", "Upcoming"])
@@ -48,7 +48,7 @@ class MoviesVC: BaseVC, MoviesView {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        viewModel.retrieveMovies()
+        viewModel?.retrieveMovies()
     }
     
     func renderUI(filters: [String]) {
@@ -127,7 +127,7 @@ class MoviesVC: BaseVC, MoviesView {
     }
     
     private func bindViewModel() {
-        viewModel.isLoading.bind { [weak self] isLoading in
+        viewModel?.isLoading.bind { [weak self] isLoading in
             guard let self = self, let isLoading = isLoading else { return }
             DispatchQueue.main.async {
                 if isLoading {
@@ -138,7 +138,7 @@ class MoviesVC: BaseVC, MoviesView {
             }
         }
         
-        viewModel.moviesDataSource.bind { [weak self] movies in
+        viewModel?.moviesDataSource.bind { [weak self] movies in
             guard let self = self else { return }
             //self.gridCollectionView.reloadData()
             DispatchQueue.main.async {
@@ -177,13 +177,13 @@ class MoviesVC: BaseVC, MoviesView {
 
 extension MoviesVC : UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.moviesDataSource.value?.count ?? 0
+        return viewModel?.moviesDataSource.value?.count ?? 0
         //return viewModel.moviesList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.collectionViewCellID, for: indexPath) as! MoviesViewCell
-        guard let item = viewModel.moviesDataSource.value?[indexPath.row] else { return cell }
+        guard let item = viewModel?.moviesDataSource.value?[indexPath.row] else { return cell }
         cell.set(item: item)
         //cell.set(item: viewModel.moviesList[indexPath.row])
         return cell
@@ -202,7 +202,12 @@ extension MoviesVC: UICollectionViewDelegateFlowLayout {
 
 }
 
-
+extension MoviesVC: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let selectedItem = viewModel?.moviesDataSource.value?[indexPath.row] else { return }
+        viewModel?.coordinator.navigateToDetails(movie: selectedItem)
+    }
+}
 
 
 

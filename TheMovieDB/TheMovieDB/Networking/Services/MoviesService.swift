@@ -14,6 +14,7 @@ protocol HasMoviesService {
 
 protocol MoviesServiceTasks {
     func getMovies(completionHandler: @escaping (Result<MoviesReponse, Error>) -> Void)
+    func getMovieDetails(movieId: String, completionHandler: @escaping (Result<MovieDetailsResponse, Error>) -> Void)
 }
 
 class MoviesService: BaseService<MoviesTarget>, MoviesServiceTasks {
@@ -23,5 +24,13 @@ class MoviesService: BaseService<MoviesTarget>, MoviesServiceTasks {
             completionHandler(result)
         }
     }
+    
+    func getMovieDetails(movieId: String, completionHandler: @escaping (Result<MovieDetailsResponse, Error>) -> Void) {
+        self.request(target: .getMovieDetails(movieId: movieId), responseClass: MovieDetailsResponse.self) { result in
+            completionHandler(result)
+        }
+    }
+    
+    
     
 }

@@ -11,6 +11,7 @@ import Foundation
 enum MoviesTarget {
     case getRepos(username: String)
     case getMovies
+    case getMovieDetails(movieId: String)
 }
 
 extension MoviesTarget: BaseTarget {
@@ -25,6 +26,8 @@ extension MoviesTarget: BaseTarget {
         switch self {
         case .getRepos(let username):
             return "/users/\(username)/repos"
+        case .getMovieDetails(let movieId):
+            return "/movie/\(movieId)?append_to_response=videos,credits,similar,watch/providers"
         case .getMovies:
             return Constants.APIs.movies
         }
@@ -34,6 +37,8 @@ extension MoviesTarget: BaseTarget {
         switch self {
         case .getRepos:
             return .get
+        case .getMovieDetails:
+            return .get
         case .getMovies:
             return .get
         }
@@ -42,6 +47,8 @@ extension MoviesTarget: BaseTarget {
     var task: Task {
         switch self {
         case .getRepos:
+            return .requestPlain
+        case .getMovieDetails:
             return .requestPlain
         case .getMovies:
             return .requestPlain

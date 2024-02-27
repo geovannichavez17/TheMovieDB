@@ -13,9 +13,16 @@ class MoviesViewModel {
     //typealias Dependencies = HasMoviesService
     
     //private let dependencies: Dependencies
-    let moviesService = MoviesService()
+    private let moviesService = MoviesService()
+    var coordinator: MoviesCoordinator!
+    
     var moviesDataSource: Observable<[Movie]> = Observable(nil)
     var isLoading: Observable<Bool> = Observable(false)
+    
+    init(coordinator: MoviesCoordinator) {
+        self.coordinator = coordinator
+    }
+    
     
     /*init(dependencies: Dependencies) {
         self.dependencies = dependencies

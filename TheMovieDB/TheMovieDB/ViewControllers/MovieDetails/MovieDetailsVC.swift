@@ -188,11 +188,15 @@ class MovieDetailsVC: BaseVC {
         return view
     }()
     
-    
+    var viewModel: MovieDetailsViewModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
        renderUI()
+    }
+    
+    func set(viewModel: MovieDetailsViewModel) {
+        self.viewModel = viewModel
     }
     
     func renderUI() {

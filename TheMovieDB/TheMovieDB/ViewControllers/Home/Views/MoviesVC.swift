@@ -30,17 +30,30 @@ class MoviesVC: BaseVC, MoviesView {
         let moviesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         moviesCollectionView.backgroundColor = .clear
         moviesCollectionView.register(MoviesViewCell.self, forCellWithReuseIdentifier: self.collectionViewCellID)
-        //moviesCollectionView.delegate = self
-        //moviesCollectionView.dataSource = self
+        moviesCollectionView.delegate = self
+        moviesCollectionView.dataSource = self
         moviesCollectionView.translatesAutoresizingMaskIntoConstraints = false
         return moviesCollectionView
     }()
 
+    let service = MoviesService()
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         renderUI(filters: ["Now Playing", "Popular", "Top Rated", "Upcoming"])
+        
+        service.getMovies { result in
+            switch result {
+            case .success(let success):
+                print(success)
+            case .failure(let failure):
+                print(failure)
+            }
+        }
+        
+        
+        
     }
     
     func renderUI(filters: [String]) {

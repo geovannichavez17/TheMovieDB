@@ -13,8 +13,6 @@ class MovieDetailsVC: BaseVC {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .yellow
-        //imageView.sd_setImage(with: URL(string: data.posterPath!), completed: nil)
         return imageView
     }()
     
@@ -36,7 +34,6 @@ class MovieDetailsVC: BaseVC {
     
     lazy var ratingLabel: UILabel = {
         let label = UILabel()
-        label.text = "5.6"
         label.textColor = .white
         label.textAlignment = .center
         label.backgroundColor = .algaeGreen
@@ -49,7 +46,6 @@ class MovieDetailsVC: BaseVC {
     
     lazy var movieNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Titanic"
         label.textColor = .white
         label.numberOfLines = 3
         label.font = .boldSystemFont(ofSize: 18)
@@ -69,7 +65,6 @@ class MovieDetailsVC: BaseVC {
     
     lazy var overviewLabel: UILabel = {
         let label = UILabel()
-        label.text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. I"
         label.textColor = .white
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 12, weight: .bold)
@@ -173,7 +168,7 @@ class MovieDetailsVC: BaseVC {
     
     lazy var buyLabel: UILabel = {
         let label = UILabel()
-        label.text = "Rent"
+        label.text = "Buy"
         label.textColor = .algaeGreen
         label.numberOfLines = 1
         label.font = .systemFont(ofSize: 18, weight: .regular)
@@ -193,6 +188,7 @@ class MovieDetailsVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
        renderUI()
+        bindViewModel()
     }
     
     func set(viewModel: MovieDetailsViewModel) {
@@ -209,8 +205,11 @@ class MovieDetailsVC: BaseVC {
         ])
         
         // Content
+        self.setNavigationBar(title: nil)
         self.setTransparentNavbar()
         self.configureScrollableContentView()
+        
+        
         
         
         // Adding views to hierarchy
@@ -232,14 +231,11 @@ class MovieDetailsVC: BaseVC {
         content.addSubview(buyContainer)
         contentView.addSubview(content)
         contentView.addSubview(ratingLabel)
-
         
-        // Positions
         NSLayoutConstraint.activate([
-            content.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 165),
+            content.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 86),
             content.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
-            content.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
-            content.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -36)
+            content.rightAnchor.constraint(equalTo: self.contentView.rightAnchor)
         ])
         
         NSLayoutConstraint.activate([
@@ -267,16 +263,81 @@ class MovieDetailsVC: BaseVC {
         ])
         
         NSLayoutConstraint.activate([
-            trailerLabel.topAnchor.constraint(equalTo: overviewLabel.bottomAnchor, constant: 36),
+            trailerLabel.topAnchor.constraint(equalTo: overviewLabel.bottomAnchor, constant: 40),
             trailerLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
-            trailerLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -12)
+            trailerLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -20),
         ])
         
         NSLayoutConstraint.activate([
             trailerCollectionView.topAnchor.constraint(equalTo: trailerLabel.bottomAnchor, constant: 12),
             trailerCollectionView.leftAnchor.constraint(equalTo: content.leftAnchor),
             trailerCollectionView.rightAnchor.constraint(equalTo: content.rightAnchor),
-            trailerCollectionView.heightAnchor.constraint(equalToConstant: 180)
+            trailerCollectionView.heightAnchor.constraint(equalToConstant: 125)
+        ])
+        
+        NSLayoutConstraint.activate([
+            crewLabel.topAnchor.constraint(equalTo: trailerCollectionView.bottomAnchor, constant: 40),
+            crewLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
+            crewLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -20),
+        ])
+        
+        NSLayoutConstraint.activate([
+            crewContainer.topAnchor.constraint(equalTo: crewLabel.bottomAnchor, constant: 12),
+            crewContainer.leftAnchor.constraint(equalTo: content.leftAnchor),
+            crewContainer.rightAnchor.constraint(equalTo: content.rightAnchor),
+            crewContainer.heightAnchor.constraint(equalToConstant: 125),
+        ])
+        
+        NSLayoutConstraint.activate([
+            similarLabel.topAnchor.constraint(equalTo: crewContainer.bottomAnchor, constant: 40),
+            similarLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
+            similarLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -20),
+        ])
+        
+        NSLayoutConstraint.activate([
+            similarContainer.topAnchor.constraint(equalTo: similarLabel.bottomAnchor, constant: 12),
+            similarContainer.leftAnchor.constraint(equalTo: content.leftAnchor),
+            similarContainer.rightAnchor.constraint(equalTo: content.rightAnchor),
+            similarContainer.heightAnchor.constraint(equalToConstant: 125),
+        ])
+        
+        NSLayoutConstraint.activate([
+            whereLabel.topAnchor.constraint(equalTo: similarContainer.bottomAnchor, constant: 40),
+            whereLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
+            whereLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -20),
+        ])
+        
+        NSLayoutConstraint.activate([
+            whereContainer.topAnchor.constraint(equalTo: whereLabel.bottomAnchor, constant: 12),
+            whereContainer.leftAnchor.constraint(equalTo: content.leftAnchor),
+            whereContainer.rightAnchor.constraint(equalTo: content.rightAnchor),
+            whereContainer.heightAnchor.constraint(equalToConstant: 125),
+        ])
+        
+        NSLayoutConstraint.activate([
+            rentLabel.topAnchor.constraint(equalTo: whereContainer.bottomAnchor, constant: 40),
+            rentLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
+            rentLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -20),
+        ])
+        
+        NSLayoutConstraint.activate([
+            rentContainer.topAnchor.constraint(equalTo: rentLabel.bottomAnchor, constant: 12),
+            rentContainer.leftAnchor.constraint(equalTo: content.leftAnchor),
+            rentContainer.rightAnchor.constraint(equalTo: content.rightAnchor),
+            rentContainer.heightAnchor.constraint(equalToConstant: 125),
+        ])
+        
+        NSLayoutConstraint.activate([
+            buyLabel.topAnchor.constraint(equalTo: rentContainer.bottomAnchor, constant: 40),
+            buyLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
+            buyLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -20),
+        ])
+        
+        NSLayoutConstraint.activate([
+            buyContainer.topAnchor.constraint(equalTo: buyLabel.bottomAnchor, constant: 12),
+            buyContainer.leftAnchor.constraint(equalTo: content.leftAnchor),
+            buyContainer.rightAnchor.constraint(equalTo: content.rightAnchor),
+            buyContainer.heightAnchor.constraint(equalToConstant: 125),
         ])
         
         NSLayoutConstraint.activate([
@@ -287,74 +348,33 @@ class MovieDetailsVC: BaseVC {
         ])
         
         NSLayoutConstraint.activate([
-            crewLabel.topAnchor.constraint(equalTo: trailerCollectionView.bottomAnchor, constant: 36),
-            crewLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
-            crewLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -12)
-        ])
-        
-        NSLayoutConstraint.activate([
-            crewContainer.topAnchor.constraint(equalTo: crewLabel.bottomAnchor, constant: 12),
-            crewContainer.leftAnchor.constraint(equalTo: content.leftAnchor),
-            crewContainer.rightAnchor.constraint(equalTo: content.rightAnchor),
-            crewContainer.heightAnchor.constraint(equalToConstant: 180)
-        ])
-        
-        NSLayoutConstraint.activate([
-            similarLabel.topAnchor.constraint(equalTo: crewContainer.bottomAnchor, constant: 36),
-            similarLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
-            similarLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -12)
-        ])
-        
-        NSLayoutConstraint.activate([
-            similarContainer.topAnchor.constraint(equalTo: similarLabel.bottomAnchor, constant: 12),
-            similarContainer.leftAnchor.constraint(equalTo: content.leftAnchor),
-            similarContainer.rightAnchor.constraint(equalTo: content.rightAnchor),
-            similarContainer.heightAnchor.constraint(equalToConstant: 180)
-        ])
-        
-        NSLayoutConstraint.activate([
-            whereLabel.topAnchor.constraint(equalTo: similarContainer.bottomAnchor, constant: 36),
-            whereLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
-            whereLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -12)
-        ])
-        
-        NSLayoutConstraint.activate([
-            whereContainer.topAnchor.constraint(equalTo: whereLabel.bottomAnchor, constant: 12),
-            whereContainer.leftAnchor.constraint(equalTo: content.leftAnchor),
-            whereContainer.rightAnchor.constraint(equalTo: content.rightAnchor),
-            whereContainer.heightAnchor.constraint(equalToConstant: 180)
-        ])
-        
-        NSLayoutConstraint.activate([
-            rentLabel.topAnchor.constraint(equalTo: whereContainer.bottomAnchor, constant: 36),
-            rentLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
-            rentLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -12)
-        ])
-        
-        NSLayoutConstraint.activate([
-            rentContainer.topAnchor.constraint(equalTo: rentLabel.bottomAnchor, constant: 12),
-            rentContainer.leftAnchor.constraint(equalTo: content.leftAnchor),
-            rentContainer.rightAnchor.constraint(equalTo: content.rightAnchor),
-            rentContainer.heightAnchor.constraint(equalToConstant: 180)
-        ])
-        
-        NSLayoutConstraint.activate([
-            buyLabel.topAnchor.constraint(equalTo: whereContainer.bottomAnchor, constant: 36),
-            buyLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
-            buyLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -12)
-        ])
-        
-        NSLayoutConstraint.activate([
-            buyContainer.topAnchor.constraint(equalTo: buyLabel.bottomAnchor, constant: 12),
-            buyContainer.leftAnchor.constraint(equalTo: content.leftAnchor),
-            buyContainer.rightAnchor.constraint(equalTo: content.rightAnchor),
-            buyContainer.heightAnchor.constraint(equalToConstant: 180)
-        ])
-        
-        NSLayoutConstraint.activate([
+            contentView.bottomAnchor.constraint(equalTo: buyContainer.bottomAnchor),
             content.bottomAnchor.constraint(equalTo: buyContainer.bottomAnchor),
-            //contentView.bottomAnchor.constraint(equalTo: content.bottomAnchor, constant: 32)
         ])
+    }
+    
+    private func bindViewModel() {
+        viewModel?.isLoading.bind { [weak self] isLoading in
+            guard let self = self, let isLoading = isLoading else { return }
+            DispatchQueue.main.async {
+                if isLoading {
+                    // LOadinhg
+                } else {
+                    
+                }
+            }
+        }
+        
+        viewModel?.movie.bind({ [weak self] movie in
+            guard let self = self else { return }
+            guard let bannerUrl = URL(string: "\(Constants.APIs.bannerImageUrl )/\(self.viewModel?.movie.value?.backdropPath ?? "")") else { return }
+            DispatchQueue.main.async {
+                self.bannerImage.af.setImage(withURL: bannerUrl)
+                self.movieNameLabel.text = movie?.originalTitle
+                self.overviewLabel.text = movie?.overview
+                self.ratingLabel.text = String(format: "%.1f", movie?.voteAverage ?? 0.0)
+            }
+        })
     }
 }
 

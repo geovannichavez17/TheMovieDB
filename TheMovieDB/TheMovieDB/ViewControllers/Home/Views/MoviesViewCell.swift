@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 class MoviesViewCell: UICollectionViewCell {
     
@@ -19,7 +20,7 @@ class MoviesViewCell: UICollectionViewCell {
     
     lazy var imgBannerShow: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -141,7 +142,8 @@ class MoviesViewCell: UICollectionViewCell {
         lblOverview.text = item.overview
         lblRating.text = String(format: "⭑ %.1f", item.voteAverage)
         lblDate.text = item.releaseDate
-        let posterUrl = "\(Constants.APIs.posterUrl)\(item.posterPath)"
-        //imgBannerShow.sd_setImage(with: URL(string: posterUrl), placeholderImage: UIImage(named: "ic_picture_placeholder"))
+        guard let posterUrl = URL(string: "\(Constants.APIs.posterImageUrl)\(item.posterPath)") else { return }
+        imgBannerShow.af.setImage(withURL: posterUrl, placeholderImage: UIImage(named: "ic_picture_placeholder"))
+
     }
 }

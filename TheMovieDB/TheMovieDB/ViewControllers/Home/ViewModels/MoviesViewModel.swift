@@ -29,6 +29,7 @@ class MoviesViewModel {
         moviesList = [Movie]()
     }*/
     
+    // FIXME: validar que el llamado no se vuelva a ejecutar cuando ya se haya hecho previamente
     func retrieveMovies() {
         if isLoading.value ?? true { return }
         

@@ -10,24 +10,26 @@ import Foundation
 
 class MovieDetailsViewModel {
     
-    private let movie: Movie?
+    var movie: Observable<Movie> = Observable(nil)
+    var isLoading: Observable<Bool> = Observable(false)
+    
+    //let movie: Movie?
     let moviesService = MoviesService()
     var moviesDataSource: Observable<[Movie]> = Observable(nil)
-    var isLoading: Observable<Bool> = Observable(false)
+    
     var coordinator: MoviesCoordinator?
     
     init(coordinator: MoviesCoordinator, movie: Movie) {
-        self.movie = movie
+        self.movie.value = movie
         self.coordinator = coordinator
     }
     
     
     func retrieveMovieDetails() {
         if isLoading.value ?? true { return }
-        guard let movie = self.movie else { return }
-        
+        guard let movie = self.movie.value else { return }
+
         isLoading.value = true
-        
         moviesService.getMovieDetails(movieId: "\(movie.id)") { [weak self] result in
             guard let self = self else { return }
             self.isLoading.value = false

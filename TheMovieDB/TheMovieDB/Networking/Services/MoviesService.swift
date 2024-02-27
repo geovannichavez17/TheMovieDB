@@ -8,11 +8,14 @@
 
 import Alamofire
 
+protocol HasMoviesService {
+    var moviesService: MoviesServiceTasks { get }
+}
+
 protocol MoviesServiceTasks {
     func getMovies(completionHandler: @escaping (Result<MoviesReponse, Error>) -> Void)
 }
 
-// 3
 class MoviesService: BaseService<MoviesTarget>, MoviesServiceTasks {
     
     func getMovies(completionHandler: @escaping (Result<MoviesReponse, Error>) -> Void) {

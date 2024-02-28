@@ -40,7 +40,7 @@ extension MoviesTarget: BaseTarget {
             return "\(Constants.APIs.upcomingPaged)\(String(page))"
         case .getMovieDetails(let movieId):
             // FIXME: Mover a constants
-            return "/movie/\(movieId)?append_to_response=videos,credits,similar,watch/providers"
+            return "movie/\(movieId)?append_to_response=videos,credits,similar,watch/providers"
         case .getMovies:
             return Constants.APIs.movies
         case .getTrailerThumbnail(let movieId):

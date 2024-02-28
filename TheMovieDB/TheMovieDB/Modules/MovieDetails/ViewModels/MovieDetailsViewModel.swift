@@ -40,7 +40,8 @@ class MovieDetailsViewModel {
         guard let movie = self.movie.value else { return }
 
         isLoading.value = true
-        moviesService?.getMovieDetails(movieId: "\(movie.id)") { [weak self] result in
+        let movieID = String(movie.id ?? 0)
+        moviesService?.getMovieDetails(movieId: movieID) { [weak self] result in
             guard let self = self else { return }
             self.isLoading.value = false
             
@@ -64,7 +65,8 @@ class MovieDetailsViewModel {
                 }
                 self.videoItems.value = thumbnailsUrls
                         
-            case .failure:
+            case .failure(let error):
+                print(error)
                 errorMessage.value = Constants.Common.labelError
             }
         }

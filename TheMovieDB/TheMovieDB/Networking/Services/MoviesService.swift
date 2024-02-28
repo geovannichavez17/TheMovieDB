@@ -8,13 +8,10 @@
 
 import Alamofire
 
-protocol HasMoviesService {
-    var moviesService: MoviesServiceTasks { get }
-}
-
 protocol MoviesServiceTasks {
     func getMovies(completionHandler: @escaping (Result<MoviesReponse, Error>) -> Void)
     func getMovieDetails(movieId: String, completionHandler: @escaping (Result<MovieDetailsResponse, Error>) -> Void)
+    //func getTrailerThumbnail(movieId: String, completionHandler: @escaping ()
 }
 
 class MoviesService: BaseService<MoviesTarget>, MoviesServiceTasks {
@@ -30,7 +27,4 @@ class MoviesService: BaseService<MoviesTarget>, MoviesServiceTasks {
             completionHandler(result)
         }
     }
-    
-    
-    
 }

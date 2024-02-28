@@ -36,7 +36,6 @@
 		D3BF03AC2B8EA922003750FF /* MovieCrewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF03AB2B8EA922003750FF /* MovieCrewCell.swift */; };
 		D3BF03AE2B8EB2FB003750FF /* SimilarFilmsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF03AD2B8EB2FB003750FF /* SimilarFilmsCell.swift */; };
 		D3BF03B02B8EBE72003750FF /* WatchProviderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF03AF2B8EBE72003750FF /* WatchProviderCell.swift */; };
-		D3BF03B42B8EE7C2003750FF /* GoogleAPIClientForREST_YouTube in Frameworks */ = {isa = PBXBuildFile; productRef = D3BF03B32B8EE7C2003750FF /* GoogleAPIClientForREST_YouTube */; };
 		D3BF03B62B8EF4B7003750FF /* VideoThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF03B52B8EF4B7003750FF /* VideoThumbnail.swift */; };
 		D3BF03B82B8EFC22003750FF /* MovieThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF03B72B8EFC22003750FF /* MovieThumbnailCell.swift */; };
 		D3C020E42B8D82BB003C237F /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C020E32B8D82BB003C237F /* Observable.swift */; };
@@ -107,7 +106,6 @@
 			files = (
 				D33F60A22B8D68F300C1B2A8 /* Alamofire in Frameworks */,
 				D346A7272B8E642200393153 /* AlamofireImage in Frameworks */,
-				D3BF03B42B8EE7C2003750FF /* GoogleAPIClientForREST_YouTube in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,6 +299,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		D3B6C19F2B8F91C700650EBE /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				D346A7232B8E4C9000393153 /* MovieDetailsViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		D3BF03AA2B8EA8FF003750FF /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -316,8 +322,8 @@
 		D3C020E62B8DAA36003C237F /* MovieDetails */ = {
 			isa = PBXGroup;
 			children = (
+				D3B6C19F2B8F91C700650EBE /* ViewModels */,
 				D3BF03AA2B8EA8FF003750FF /* Views */,
-				D346A7232B8E4C9000393153 /* MovieDetailsViewModel.swift */,
 			);
 			path = MovieDetails;
 			sourceTree = "<group>";
@@ -341,7 +347,6 @@
 			packageProductDependencies = (
 				D33F60A12B8D68F300C1B2A8 /* Alamofire */,
 				D346A7262B8E642200393153 /* AlamofireImage */,
-				D3BF03B32B8EE7C2003750FF /* GoogleAPIClientForREST_YouTube */,
 			);
 			productName = TheMovieDB;
 			productReference = D3A25FA62B8ACDB5009D8D2B /* TheMovieDB.app */;
@@ -418,7 +423,6 @@
 			packageReferences = (
 				D33F60A02B8D68F300C1B2A8 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				D346A7252B8E642200393153 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
-				D3BF03B22B8EE7C1003750FF /* XCRemoteSwiftPackageReference "google-api-objectivec-client-for-rest" */,
 			);
 			productRefGroup = D3A25FA72B8ACDB5009D8D2B /* Products */;
 			projectDirPath = "";
@@ -848,14 +852,6 @@
 				minimumVersion = 4.0.0;
 			};
 		};
-		D3BF03B22B8EE7C1003750FF /* XCRemoteSwiftPackageReference "google-api-objectivec-client-for-rest" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/google/google-api-objectivec-client-for-rest.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -868,11 +864,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D346A7252B8E642200393153 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
 			productName = AlamofireImage;
-		};
-		D3BF03B32B8EE7C2003750FF /* GoogleAPIClientForREST_YouTube */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D3BF03B22B8EE7C1003750FF /* XCRemoteSwiftPackageReference "google-api-objectivec-client-for-rest" */;
-			productName = GoogleAPIClientForREST_YouTube;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

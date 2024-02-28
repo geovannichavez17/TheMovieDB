@@ -33,7 +33,8 @@ struct Constants {
         
         static let movies = "/movie/now_playing"
         static let moviesPaged = "/movie/now_playing?page=1"
-        
+        static let youTubeThumbnailUrl = "http://img.youtube.com/vi"
+        static let thumbnailResolution = "sddefault.jpg"
         static let youTubeApiKey = "AIzaSyAVgq_STlzDgmh2bi0IRCRNvuUh3yzIGag"
         
         /*static let auth_token = "\(baseUrl)/authentication/token/new?api_key=\(apiKey)"

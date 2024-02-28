@@ -12,11 +12,14 @@ enum MoviesTarget {
     case getRepos(username: String)
     case getMovies
     case getMovieDetails(movieId: String)
+    case getTrailerThumbnail(movieId: String)
 }
 
 extension MoviesTarget: BaseTarget {
     var baseURL: String {
         switch self {
+        case .getTrailerThumbnail:
+            return Constants.APIs.youTubeThumbnailUrl
         default:
             return Constants.APIs.baseUrl
         }
@@ -30,6 +33,8 @@ extension MoviesTarget: BaseTarget {
             return "/movie/\(movieId)?append_to_response=videos,credits,similar,watch/providers"
         case .getMovies:
             return Constants.APIs.movies
+        case .getTrailerThumbnail(let movieId):
+            return "/\(movieId)/\(Constants.APIs.thumbnailResolution)"
         }
     }
     
@@ -40,6 +45,8 @@ extension MoviesTarget: BaseTarget {
         case .getMovieDetails:
             return .get
         case .getMovies:
+            return .get
+        case .getTrailerThumbnail:
             return .get
         }
     }
@@ -52,11 +59,15 @@ extension MoviesTarget: BaseTarget {
             return .requestPlain
         case .getMovies:
             return .requestPlain
+        case .getTrailerThumbnail:
+            return .requestPlain
         }
     }
     
     var headers: [String : String]? {
         switch self {
+        case .getMovieDetails:
+            return [String: String]()
         default:
             return [:]
         }

@@ -23,9 +23,9 @@ struct MovieDetailsResponse: Codable {
     let voteAverage: Double
     let voteCount: Int
     let videos: Videos
-    //let credits: Credits
-    //let similar: Similar
-    //let watchProviders: WatchProviders
+    let credits: Credits
+    let similar: Similar
+    let watchProviders: WatchProviders
 
     enum CodingKeys: String, CodingKey {
         case adult
@@ -42,23 +42,26 @@ struct MovieDetailsResponse: Codable {
         case voteAverage = "vote_average"
         case voteCount = "vote_count"
         case videos
-        //case credits = "credits"
-        //case similar = "similar"
-        //case watchProviders = "watch/providers"
+        case credits = "credits"
+        case similar = "similar"
+        case watchProviders = "watch/providers"
     }
 }
 
  
- 
 // MARK: - Videos
 struct Videos: Codable {
     let videos: [Video]?
+    
+    enum CodingKeys: String, CodingKey {
+        case videos = "results"
+    }
 }
 
 struct Video: Codable {
     let name, key: String?
     let size: Int?
-    let type: VideoTypeEnum?
+    let type: String?
     let official: Bool?
     let id: String?
 
@@ -69,13 +72,7 @@ struct Video: Codable {
 }
 
 
-enum VideoTypeEnum: String, Codable {
-    case featurette = "Featurette"
-    case teaser = "Teaser"
-    case trailer = "Trailer"
-}
 
-/*
 // MARK: - Credits
 /*struct CreditItem: Codable {
     let credits: Credits?
@@ -83,6 +80,10 @@ enum VideoTypeEnum: String, Codable {
 
 struct Credits: Codable {
     let cast, crew: [Cast]?
+    
+    enum CodingKeys: String, CodingKey {
+        case cast, crew
+    }
 }
 
 struct Cast: Codable {
@@ -110,24 +111,24 @@ struct Cast: Codable {
 }
 
 
+
+
 // MARK: - Similar
-/*struct SimilarItem: Codable {
-    let similar: Similar?
-}*/
 
 struct Similar: Codable {
     let page: Int?
-    let results: [Result]?
+    let similarResults: [SimilarResult]?
     let totalPages, totalResults: Int?
 
     enum CodingKeys: String, CodingKey {
-        case page, results
+        case page
+        case similarResults = "results"
         case totalPages = "total_pages"
         case totalResults = "total_results"
     }
 }
 
-struct Result: Codable {
+struct SimilarResult: Codable {
     let adult: Bool?
     let backdropPath: String?
     let genreIDS: [Int]?
@@ -155,24 +156,26 @@ struct Result: Codable {
 }
 
 
+
 // MARK: - WatchProviders
-/*struct WatchProvidersItem: Codable {
+
+struct WatchProvidersItem: Codable {
     let watchProviders: WatchProviders?
 
     enum CodingKeys: String, CodingKey {
         case watchProviders = "watch/providers"
     }
-}*/
+}
 
 struct WatchProviders: Codable {
-    let results: Results?
+    let providerResults: ProvidersResults?
     
     enum CodingKeys: String, CodingKey {
-        case results = "results"
+        case providerResults = "results"
     }
 }
 
-struct Results: Codable {
+struct ProvidersResults: Codable {
     let us: US?
 
     enum CodingKeys: String, CodingKey {
@@ -180,7 +183,7 @@ struct Results: Codable {
     }
 }
 
-struct Provider: Codable {
+struct WatchProvider: Codable {
     let logoPath: String?
     let providerID: Int?
     let providerName: String?
@@ -196,7 +199,6 @@ struct Provider: Codable {
 
 struct US: Codable {
     let link: String?
-    let flatrate, rent, buy, ads: [Provider]?
+    let flatrate, rent, buy, ads: [WatchProvider]?
 }
 
-*/

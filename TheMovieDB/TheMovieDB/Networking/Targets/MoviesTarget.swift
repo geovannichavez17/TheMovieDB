@@ -9,8 +9,11 @@ import Alamofire
 import Foundation
 
 enum MoviesTarget {
-    case getRepos(username: String)
     case getMovies
+    case getNowPlaying(page: Int)
+    case getPopular(page: Int)
+    case getTopRated(page: Int)
+    case getUpcoming(page: Int)
     case getMovieDetails(movieId: String)
     case getTrailerThumbnail(movieId: String)
 }
@@ -27,9 +30,16 @@ extension MoviesTarget: BaseTarget {
     
     var path: String {
         switch self {
-        case .getRepos(let username):
-            return "/users/\(username)/repos"
+        case .getNowPlaying(let page):
+            return "\(Constants.APIs.nowPlayingPaged)\(String(page))"
+        case .getPopular(let page):
+            return "\(Constants.APIs.popularPaged)\(String(page))"
+        case .getTopRated(let page):
+            return "\(Constants.APIs.topRatedPaged)\(String(page))"
+        case .getUpcoming(let page):
+            return "\(Constants.APIs.upcomingPaged)\(String(page))"
         case .getMovieDetails(let movieId):
+            // FIXME: Mover a constants
             return "/movie/\(movieId)?append_to_response=videos,credits,similar,watch/providers"
         case .getMovies:
             return Constants.APIs.movies
@@ -40,11 +50,12 @@ extension MoviesTarget: BaseTarget {
     
     var method: HTTPMethod {
         switch self {
-        case .getRepos:
-            return .get
-        case .getMovieDetails:
-            return .get
-        case .getMovies:
+        case .getMovies,
+             .getNowPlaying,
+             .getPopular,
+             .getTopRated,
+             .getUpcoming,
+             .getMovieDetails:
             return .get
         case .getTrailerThumbnail:
             return .get
@@ -53,11 +64,12 @@ extension MoviesTarget: BaseTarget {
     
     var task: Task {
         switch self {
-        case .getRepos:
-            return .requestPlain
-        case .getMovieDetails:
-            return .requestPlain
-        case .getMovies:
+        case .getMovies,
+             .getNowPlaying,
+             .getPopular,
+             .getTopRated,
+             .getUpcoming,
+             .getMovieDetails:
             return .requestPlain
         case .getTrailerThumbnail:
             return .requestPlain

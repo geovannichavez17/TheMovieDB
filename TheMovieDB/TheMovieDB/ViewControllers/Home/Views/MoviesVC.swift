@@ -13,6 +13,7 @@ class MoviesVC: BaseVC, MoviesView {
     let collectionViewCellID = "collectionViewCellID"
     var tvShowsList = [Movie]()
     var viewModel: MoviesViewModel?
+    var selectedFilter: Categories = .nowPlaying
     
     lazy var scFilters: UISegmentedControl = {
         let filtersSegments = UISegmentedControl()
@@ -48,7 +49,7 @@ class MoviesVC: BaseVC, MoviesView {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        viewModel?.retrieveMovies()
+        viewModel?.retrieveMovies(from: selectedFilter)
     }
     
     func renderUI(filters: [String]) {
@@ -158,20 +159,12 @@ class MoviesVC: BaseVC, MoviesView {
     
     // MARK: Other methods
     @objc func onFilterSelected() {
-        /*var selectedFilter: tvShowFilter
+        let index = scFilters.selectedSegmentIndex
+        guard let filter = scFilters.titleForSegment(at: index) else { return }
+        guard let category = Categories(rawValue: filter) else { return }
+        selectedFilter = category
         
-        switch scFilters.selectedSegmentIndex {
-        case 1:
-            selectedFilter = .topRated
-        case 2:
-            selectedFilter =
-        case 3:
-            selectedFilter = .airingToday
-        default:
-            selectedFilter = .popular
-        }*/
-        
-        //self.presenter.retreieveTVShows(filter: selectedFilter)
+        viewModel?.retrieveMovies(from: selectedFilter)
     }
 }
 

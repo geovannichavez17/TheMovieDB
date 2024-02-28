@@ -32,12 +32,16 @@ struct Constants {
         static let token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhYjY1MDU2YWVjNDcxOGMwOTIxNGQ0YTdlY2NkNTg4MCIsInN1YiI6IjYwMzA3OGFhN2Y2YzhkMDAzZjBmN2FlYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.m1iwx98S8xTSrFWbDFbL2rzqaIBvNOXjcyf1ycJ9ak8"
         
         static let movies = "/movie/now_playing"
-        static let moviesPaged = "/movie/now_playing?page=1"
+        static let nowPlayingPaged = "movie/now_playing?page="
+        static let popularPaged = "movie/popular?page="
+        static let topRatedPaged = "movie/top_rated?page="
+        static let upcomingPaged = "movie/upcoming?page="
+        
         static let youTubeThumbnailUrl = "http://img.youtube.com/vi"
-        static let thumbnailResolution = "sddefault.jpg"
         static let youTubeApiKey = "AIzaSyAVgq_STlzDgmh2bi0IRCRNvuUh3yzIGag"
         static let youTubeAppLink = "youtube://www.youtube.com/watch?v="
         static let youTubeUrl =  "https://www.youtube.com/watch?v="
+        static let thumbnailResolution = "sddefault.jpg"
         
         /*static let auth_token = "\(baseUrl)/authentication/token/new?api_key=\(apiKey)"
         static let signin = "\(baseUrl)/authentication/token/validate_with_login?api_key=\(apiKey)"

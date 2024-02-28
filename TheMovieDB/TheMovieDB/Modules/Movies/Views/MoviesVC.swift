@@ -13,8 +13,9 @@ class MoviesVC: BaseVC {
     let collectionViewCellID = "collectionViewCellID"
     var viewModel: MoviesViewModel?
     var selectedFilter: Categories = .nowPlaying
+    var viewAlreadyAppeared = false
     
-    lazy var scFilters: UISegmentedControl = {
+    lazy var segmentedFilters: UISegmentedControl = {
         let filtersSegments = UISegmentedControl()
         filtersSegments.selectedSegmentIndex = 0
         filtersSegments.selectedSegmentTintColor = .customGray
@@ -48,7 +49,10 @@ class MoviesVC: BaseVC {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        viewModel?.retrieveMovies(from: selectedFilter)
+        if !viewAlreadyAppeared {
+            viewModel?.retrieveMovies(from: selectedFilter)
+            viewAlreadyAppeared = true
+        }
     }
     
     func renderUI() {
@@ -57,31 +61,31 @@ class MoviesVC: BaseVC {
         self.configureContentView()
         
         // Elements
-        scFilters = UISegmentedControl(items: Categories.allCases.map { $0.rawValue })
-        scFilters.selectedSegmentIndex = 0
-        scFilters.selectedSegmentTintColor = .customGray
-        scFilters.backgroundColor = .lightLayer
-        scFilters.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white,
+        segmentedFilters = UISegmentedControl(items: Categories.allCases.map { $0.rawValue })
+        segmentedFilters.selectedSegmentIndex = 0
+        segmentedFilters.selectedSegmentTintColor = .customGray
+        segmentedFilters.backgroundColor = .lightLayer
+        segmentedFilters.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white,
                                           NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)], for: .normal)
-        scFilters.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white,
+        segmentedFilters.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white,
                                           NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 12)], for: .selected)
-        scFilters.translatesAutoresizingMaskIntoConstraints = false
-        scFilters.addTarget(self, action: #selector(onFilterSelected), for: .valueChanged)
+        segmentedFilters.translatesAutoresizingMaskIntoConstraints = false
+        segmentedFilters.addTarget(self, action: #selector(onFilterSelected), for: .valueChanged)
         
         // Adding to view
-        self.contentView.addSubview(scFilters)
+        self.contentView.addSubview(segmentedFilters)
         self.contentView.addSubview(gridCollectionView)
         
         
         // Layout
         NSLayoutConstraint.activate([
-            scFilters.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            scFilters.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 23),
-            scFilters.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -23),
-            scFilters.heightAnchor.constraint(equalToConstant: 28)
+            segmentedFilters.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            segmentedFilters.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 23),
+            segmentedFilters.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -23),
+            segmentedFilters.heightAnchor.constraint(equalToConstant: 28)
         ])
         NSLayoutConstraint.activate([
-            gridCollectionView.topAnchor.constraint(equalTo: scFilters.bottomAnchor, constant: 23),
+            gridCollectionView.topAnchor.constraint(equalTo: segmentedFilters.bottomAnchor, constant: 23),
             gridCollectionView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 9),
             gridCollectionView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
             gridCollectionView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -9)
@@ -120,8 +124,8 @@ class MoviesVC: BaseVC {
     }
 
     @objc func onFilterSelected() {
-        let index = scFilters.selectedSegmentIndex
-        guard let filter = scFilters.titleForSegment(at: index) else { return }
+        let index = segmentedFilters.selectedSegmentIndex
+        guard let filter = segmentedFilters.titleForSegment(at: index) else { return }
         guard let category = Categories(rawValue: filter) else { return }
         selectedFilter = category
         viewModel?.retrieveMovies(from: selectedFilter)
@@ -150,7 +154,6 @@ extension MoviesVC: UICollectionViewDelegateFlowLayout {
         let widthPerItem = collectionView.frame.width / 2
         return CGSize(width: widthPerItem - 6, height: 350)
     }
-
 }
 
 extension MoviesVC: UICollectionViewDelegate {

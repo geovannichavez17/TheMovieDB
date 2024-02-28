@@ -10,8 +10,6 @@ import UIKit
 class MovieDetailsVC: BaseVC {
     
     private let trailerCollectionViewCellID = "trailerCollectionViewCellID"
-    private let crewCollectionViewCellID = "crewCollectionViewCellID"
-    private let similarCollectionViewCellID = "similarCollectionViewCellID"
     
     lazy var bannerImage: UIImageView = {
         let imageView = UIImageView()
@@ -107,89 +105,33 @@ class MovieDetailsVC: BaseVC {
         return collectionView
     }()
     
-    lazy var crewLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Crew"
-        label.textColor = .algaeGreen
-        label.numberOfLines = 1
-        label.font = .systemFont(ofSize: 18, weight: .regular)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
     
-    lazy var crewGuide: UILayoutGuide = {
-        let guide = UILayoutGuide()
-        guide.identifier = "crewContainer"
-        return guide
-    }()
-    
-    lazy var crewCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .horizontal
-        flowLayout.minimumLineSpacing = 20
-        flowLayout.minimumInteritemSpacing = 10
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.tag = 100
-        collectionView.backgroundColor = .clear
-        collectionView.register(MovieCrewCell.self, forCellWithReuseIdentifier: self.crewCollectionViewCellID)
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        return collectionView
-    }()
-    
-    lazy var similarLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Similar Movies"
-        label.textColor = .algaeGreen
-        label.numberOfLines = 1
-        label.font = .systemFont(ofSize: 18, weight: .regular)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    lazy var similarGuide: UILayoutGuide = {
-        let guide = UILayoutGuide()
-        guide.identifier = "similarGuide"
-        return guide
-    }()
-    
-    lazy var similarCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .horizontal
-        flowLayout.minimumLineSpacing = 20
-        flowLayout.minimumInteritemSpacing = 10
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.tag = 200
-        collectionView.backgroundColor = .clear
-        collectionView.register(SimilarFilmsCell.self, forCellWithReuseIdentifier: self.similarCollectionViewCellID)
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        return collectionView
-    }()
     
     lazy var contentStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.backgroundColor = .yellow
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
+    lazy var crewView: MovieCrewView = {
+        return MovieCrewView()
+    }()
+    
+    lazy var similarFilms: SimilarMoviesView = {
+        return SimilarMoviesView()
+    }()
+    
     lazy var streamingView: MovieStreamingView = {
-        let view = MovieStreamingView()
-        return view
+        return MovieStreamingView()
     }()
     
     lazy var rentView: MovieRentView = {
-        let view = MovieRentView()
-        return view
+        return MovieRentView()
     }()
     
     lazy var buyView: MovieBuyView = {
-        let view = MovieBuyView()
-        return view
+        return MovieBuyView()
     }()
     
     
@@ -234,12 +176,6 @@ class MovieDetailsVC: BaseVC {
         content.addSubview(trailerLabel)
         content.addLayoutGuide(trailerGuide)
         content.addSubview(trailerCollectionView)
-        content.addSubview(crewLabel)
-        content.addSubview(crewCollectionView)
-        content.addLayoutGuide(crewGuide)
-        content.addSubview(similarLabel)
-        content.addLayoutGuide(similarGuide)
-        content.addSubview(similarCollectionView)
         content.addSubview(contentStackView)
         contentView.addSubview(content)
         contentView.addSubview(ratingLabel)
@@ -291,49 +227,9 @@ class MovieDetailsVC: BaseVC {
         ])
         
         NSLayoutConstraint.activate([
-            crewLabel.topAnchor.constraint(equalTo: trailerGuide.bottomAnchor, constant: 35),
-            crewLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
-            crewLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -20),
-        ])
-        NSLayoutConstraint.activate([
-            crewGuide.topAnchor.constraint(equalTo: crewLabel.bottomAnchor, constant: 12),
-            crewGuide.leftAnchor.constraint(equalTo: content.leftAnchor),
-            crewGuide.rightAnchor.constraint(equalTo: content.rightAnchor),
-            crewGuide.heightAnchor.constraint(equalToConstant: 125),
-        ])
-        
-        NSLayoutConstraint.activate([
-            crewCollectionView.topAnchor.constraint(equalTo: crewGuide.topAnchor),
-            crewCollectionView.leftAnchor.constraint(equalTo: crewGuide.leftAnchor),
-            crewCollectionView.rightAnchor.constraint(equalTo: crewGuide.rightAnchor),
-            crewCollectionView.bottomAnchor.constraint(equalTo: crewGuide.bottomAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            similarLabel.topAnchor.constraint(equalTo: crewGuide.bottomAnchor, constant: 40),
-            similarLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
-            similarLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -20),
-        ])
-        
-        NSLayoutConstraint.activate([
-            similarGuide.topAnchor.constraint(equalTo: similarLabel.bottomAnchor, constant: 12),
-            similarGuide.leftAnchor.constraint(equalTo: content.leftAnchor),
-            similarGuide.rightAnchor.constraint(equalTo: content.rightAnchor),
-            similarGuide.heightAnchor.constraint(equalToConstant: 180),
-        ])
-        
-        NSLayoutConstraint.activate([
-            similarCollectionView.topAnchor.constraint(equalTo: similarGuide.topAnchor),
-            similarCollectionView.leftAnchor.constraint(equalTo: similarGuide.leftAnchor),
-            similarCollectionView.rightAnchor.constraint(equalTo: similarGuide.rightAnchor),
-            similarCollectionView.bottomAnchor.constraint(equalTo: similarGuide.bottomAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            contentStackView.topAnchor.constraint(equalTo: similarCollectionView.bottomAnchor),
+            contentStackView.topAnchor.constraint(equalTo: trailerCollectionView.bottomAnchor),
             contentStackView.leftAnchor.constraint(equalTo: content.leftAnchor),
             contentStackView.rightAnchor.constraint(equalTo: content.rightAnchor)
-        
         ])
         
         NSLayoutConstraint.activate([
@@ -391,14 +287,22 @@ class MovieDetailsVC: BaseVC {
         viewModel?.crew.bind({ [weak self] crewList in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.crewCollectionView.reloadData()
+                guard let crewList = crewList else { return }
+                if !crewList.isEmpty {
+                    self.crewView.cellItems = crewList
+                    self.contentStackView.addArrangedSubview(self.crewView)
+                }
             }
         })
         
         viewModel?.similarFilms.bind({ [weak self] similarFilms in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.similarCollectionView.reloadData()
+                guard let films = similarFilms else { return }
+                if !films.isEmpty {
+                    self.similarFilms.cellItems = films
+                    self.contentStackView.addArrangedSubview(self.similarFilms)
+                }
             }
         })
         
@@ -441,35 +345,14 @@ class MovieDetailsVC: BaseVC {
 extension MovieDetailsVC : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch collectionView.tag {
-        case 200:
-            return viewModel?.similarFilms.value?.count ?? 0
-        case 600:
-            return viewModel?.videoItems.value?.count ?? 0
-        default:
-            return viewModel?.crew.value?.count ?? 0
-        }
+        return viewModel?.videoItems.value?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch collectionView.tag {
-        case 200:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.similarCollectionViewCellID, for: indexPath) as! SimilarFilmsCell
-            guard let currentItem = viewModel?.similarFilms.value?[indexPath.row] else { return UICollectionViewCell() }
-            cell.set(item: currentItem)
-            return cell
-        case 600:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.trailerCollectionViewCellID, for: indexPath) as! MovieThumbnailCell
-            guard let currentItem = viewModel?.videoItems.value?[indexPath.row] else { return UICollectionViewCell() }
-            cell.set(item: currentItem)
-            return cell
-        default:
-            // Crew
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.crewCollectionViewCellID, for: indexPath) as! MovieCrewCell
-            guard let currentItem = viewModel?.crew.value?[indexPath.row] else { return UICollectionViewCell() }
-            cell.set(item: currentItem)
-            return cell
-        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.trailerCollectionViewCellID, for: indexPath) as! MovieThumbnailCell
+        guard let currentItem = viewModel?.videoItems.value?[indexPath.row] else { return UICollectionViewCell() }
+        cell.set(item: currentItem)
+        return cell
     }
 }
 
@@ -479,15 +362,7 @@ extension MovieDetailsVC: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        switch collectionView.tag {
-        case 200:
-            return CGSize(width: 100, height: 180)
-        case 600:
-            return CGSize(width: 329, height: 185)
-        default:
-            // Crew
-            return CGSize(width: 100, height: 125)
-        }
+        return CGSize(width: 329, height: 185)
     }
 }
 

@@ -185,29 +185,3 @@ class BaseVC: UIViewController {
     }
 
 }
-
-enum NavbarBackground {
-    case dark
-    case transparent
-}
-
-
-// MARK: -  View Controllers Preview
-
-import SwiftUI
-struct GenericViewControllerPreview: UIViewControllerRepresentable {
-    private let onViewControllerSet: () -> BaseVC
-
-    init(_ viewControllerToBuild: @escaping(() -> BaseVC)) {
-        self.onViewControllerSet = viewControllerToBuild
-    }
-    
-    func makeUIViewController(context: Context) -> some UIViewController {
-        let viewController = onViewControllerSet()
-        return UINavigationController(rootViewController: viewController)
-    }
-
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        // Not needed
-    }
-}

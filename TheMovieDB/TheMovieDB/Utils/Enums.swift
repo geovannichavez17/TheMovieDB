@@ -13,3 +13,8 @@ enum Categories: String, CaseIterable {
     case topRated = "Top Rated"
     case upcoming = "Upcoming"
 }
+
+enum NavbarBackground {
+    case dark
+    case transparent
+}

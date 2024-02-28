@@ -11,7 +11,6 @@ class MoviesVC: BaseVC {
 
     // Global
     let collectionViewCellID = "collectionViewCellID"
-    var tvShowsList = [Movie]()
     var viewModel: MoviesViewModel?
     var selectedFilter: Categories = .nowPlaying
     
@@ -167,18 +166,8 @@ extension MoviesVC: UIScrollViewDelegate {
         if position > (gridCollectionView.contentSize.height-100 - gridCollectionView.frame.size.height) {
             guard let isLoading = viewModel?.isLoading.value else { return }
             guard !isLoading else { return }
-            print("fetch more data")
             viewModel?.retrieveMovies(from: selectedFilter)
             
         }
-    }
-}
-
-
-
-import SwiftUI
-struct HomePreviews: PreviewProvider {
-    static var previews: some View {
-        GenericViewControllerPreview({ MoviesVC() }).previewDevice(.init(stringLiteral: "iPhone 11"))
     }
 }

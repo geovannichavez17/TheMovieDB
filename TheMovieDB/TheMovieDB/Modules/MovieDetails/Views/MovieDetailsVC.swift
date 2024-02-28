@@ -12,7 +12,6 @@ class MovieDetailsVC: BaseVC {
     private let trailerCollectionViewCellID = "trailerCollectionViewCellID"
     private let crewCollectionViewCellID = "crewCollectionViewCellID"
     private let similarCollectionViewCellID = "similarCollectionViewCellID"
-    private let whereCollectionViewCellID = "whereCollectionViewCellID"
     
     lazy var bannerImage: UIImageView = {
         let imageView = UIImageView()
@@ -139,7 +138,6 @@ class MovieDetailsVC: BaseVC {
         return collectionView
     }()
     
-    
     lazy var similarLabel: UILabel = {
         let label = UILabel()
         label.text = "Similar Movies"
@@ -171,94 +169,27 @@ class MovieDetailsVC: BaseVC {
         return collectionView
     }()
     
-    lazy var whereLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Where to watch"
-        label.textColor = .algaeGreen
-        label.numberOfLines = 1
-        label.font = .systemFont(ofSize: 18, weight: .regular)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    lazy var contentStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.backgroundColor = .yellow
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
     
-    lazy var whereGuide: UILayoutGuide = {
-        let guide = UILayoutGuide()
-        guide.identifier = "similarGuide"
-        return guide
+    lazy var streamingView: MovieStreamingView = {
+        let view = MovieStreamingView()
+        return view
     }()
     
-    lazy var whereCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .horizontal
-        flowLayout.minimumLineSpacing = 20
-        flowLayout.minimumInteritemSpacing = 10
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.tag = 300
-        collectionView.backgroundColor = .clear
-        collectionView.register(WatchProviderCell.self, forCellWithReuseIdentifier: self.whereCollectionViewCellID)
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        return collectionView
+    lazy var rentView: MovieRentView = {
+        let view = MovieRentView()
+        return view
     }()
     
-    lazy var rentLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Rent"
-        label.textColor = .algaeGreen
-        label.numberOfLines = 1
-        label.font = .systemFont(ofSize: 18, weight: .regular)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    lazy var rentGuide: UILayoutGuide = {
-        let guide = UILayoutGuide()
-        guide.identifier = "similarGuide"
-        return guide
-    }()
-    lazy var rentCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .horizontal
-        flowLayout.minimumLineSpacing = 20
-        flowLayout.minimumInteritemSpacing = 10
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.tag = 400
-        collectionView.backgroundColor = .clear
-        collectionView.register(WatchProviderCell.self, forCellWithReuseIdentifier: self.whereCollectionViewCellID)
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        return collectionView
-    }()
-    
-    
-    lazy var buyLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Buy"
-        label.textColor = .algaeGreen
-        label.numberOfLines = 1
-        label.font = .systemFont(ofSize: 18, weight: .regular)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    lazy var buyGuide: UILayoutGuide = {
-        let guide = UILayoutGuide()
-        guide.identifier = "similarGuide"
-        return guide
-    }()
-    lazy var buyCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .horizontal
-        flowLayout.minimumLineSpacing = 20
-        flowLayout.minimumInteritemSpacing = 10
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.tag = 500
-        collectionView.backgroundColor = .clear
-        collectionView.register(WatchProviderCell.self, forCellWithReuseIdentifier: self.whereCollectionViewCellID)
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        return collectionView
+    lazy var buyView: MovieBuyView = {
+        let view = MovieBuyView()
+        return view
     }()
     
     
@@ -309,15 +240,7 @@ class MovieDetailsVC: BaseVC {
         content.addSubview(similarLabel)
         content.addLayoutGuide(similarGuide)
         content.addSubview(similarCollectionView)
-        content.addSubview(whereLabel)
-        content.addLayoutGuide(whereGuide)
-        content.addSubview(whereCollectionView)
-        content.addSubview(rentLabel)
-        content.addLayoutGuide(rentGuide)
-        content.addSubview(rentCollectionView)
-        content.addSubview(buyLabel)
-        content.addLayoutGuide(buyGuide)
-        content.addSubview(buyCollectionView)
+        content.addSubview(contentStackView)
         contentView.addSubview(content)
         contentView.addSubview(ratingLabel)
         
@@ -391,12 +314,14 @@ class MovieDetailsVC: BaseVC {
             similarLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
             similarLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -20),
         ])
+        
         NSLayoutConstraint.activate([
             similarGuide.topAnchor.constraint(equalTo: similarLabel.bottomAnchor, constant: 12),
             similarGuide.leftAnchor.constraint(equalTo: content.leftAnchor),
             similarGuide.rightAnchor.constraint(equalTo: content.rightAnchor),
             similarGuide.heightAnchor.constraint(equalToConstant: 180),
         ])
+        
         NSLayoutConstraint.activate([
             similarCollectionView.topAnchor.constraint(equalTo: similarGuide.topAnchor),
             similarCollectionView.leftAnchor.constraint(equalTo: similarGuide.leftAnchor),
@@ -404,71 +329,23 @@ class MovieDetailsVC: BaseVC {
             similarCollectionView.bottomAnchor.constraint(equalTo: similarGuide.bottomAnchor)
         ])
         
+        NSLayoutConstraint.activate([
+            contentStackView.topAnchor.constraint(equalTo: similarCollectionView.bottomAnchor),
+            contentStackView.leftAnchor.constraint(equalTo: content.leftAnchor),
+            contentStackView.rightAnchor.constraint(equalTo: content.rightAnchor)
         
-        NSLayoutConstraint.activate([
-            whereLabel.topAnchor.constraint(equalTo: similarGuide.bottomAnchor, constant: 40),
-            whereLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
-            whereLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -20),
-        ])
-        NSLayoutConstraint.activate([
-            whereGuide.topAnchor.constraint(equalTo: whereLabel.bottomAnchor, constant: 12),
-            whereGuide.leftAnchor.constraint(equalTo: content.leftAnchor),
-            whereGuide.rightAnchor.constraint(equalTo: content.rightAnchor),
-            whereGuide.heightAnchor.constraint(equalToConstant: 80),
-        ])
-        NSLayoutConstraint.activate([
-            whereCollectionView.topAnchor.constraint(equalTo: whereGuide.topAnchor),
-            whereCollectionView.leftAnchor.constraint(equalTo: whereGuide.leftAnchor),
-            whereCollectionView.rightAnchor.constraint(equalTo: whereGuide.rightAnchor),
-            whereCollectionView.bottomAnchor.constraint(equalTo: whereGuide.bottomAnchor)
         ])
         
-        
-        NSLayoutConstraint.activate([
-            rentLabel.topAnchor.constraint(equalTo: whereGuide.bottomAnchor, constant: 40),
-            rentLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
-            rentLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -20),
-        ])
-        NSLayoutConstraint.activate([
-            rentGuide.topAnchor.constraint(equalTo: rentLabel.bottomAnchor, constant: 12),
-            rentGuide.leftAnchor.constraint(equalTo: content.leftAnchor),
-            rentGuide.rightAnchor.constraint(equalTo: content.rightAnchor),
-            rentGuide.heightAnchor.constraint(equalToConstant: 80),
-        ])
-        NSLayoutConstraint.activate([
-            rentCollectionView.topAnchor.constraint(equalTo: rentGuide.topAnchor),
-            rentCollectionView.leftAnchor.constraint(equalTo: rentGuide.leftAnchor),
-            rentCollectionView.rightAnchor.constraint(equalTo: rentGuide.rightAnchor),
-            rentCollectionView.bottomAnchor.constraint(equalTo: rentGuide.bottomAnchor)
-        ])
-        
-        
-        NSLayoutConstraint.activate([
-            buyLabel.topAnchor.constraint(equalTo: rentGuide.bottomAnchor, constant: 40),
-            buyLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
-            buyLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -20),
-        ])
-        NSLayoutConstraint.activate([
-            buyGuide.topAnchor.constraint(equalTo: buyLabel.bottomAnchor, constant: 12),
-            buyGuide.leftAnchor.constraint(equalTo: content.leftAnchor),
-            buyGuide.rightAnchor.constraint(equalTo: content.rightAnchor),
-            buyGuide.heightAnchor.constraint(equalToConstant: 125),
-        ])
         NSLayoutConstraint.activate([
             ratingLabel.centerYAnchor.constraint(equalTo: content.topAnchor),
             ratingLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -30),
             ratingLabel.heightAnchor.constraint(equalToConstant: 40),
             ratingLabel.widthAnchor.constraint(equalToConstant: 40)
         ])
+        
         NSLayoutConstraint.activate([
-            buyCollectionView.topAnchor.constraint(equalTo: buyGuide.topAnchor),
-            buyCollectionView.leftAnchor.constraint(equalTo: buyGuide.leftAnchor),
-            buyCollectionView.rightAnchor.constraint(equalTo: buyGuide.rightAnchor),
-            buyCollectionView.bottomAnchor.constraint(equalTo: buyGuide.bottomAnchor)
-        ])
-        NSLayoutConstraint.activate([
-            contentView.bottomAnchor.constraint(equalTo: buyGuide.bottomAnchor),
-            content.bottomAnchor.constraint(equalTo: buyGuide.bottomAnchor),
+            contentView.bottomAnchor.constraint(equalTo: contentStackView.bottomAnchor, constant: 12),
+            content.bottomAnchor.constraint(equalTo: contentStackView.bottomAnchor, constant: 12),
         ])
     }
     
@@ -477,10 +354,19 @@ class MovieDetailsVC: BaseVC {
             guard let self = self, let isLoading = isLoading else { return }
             DispatchQueue.main.async {
                 if isLoading {
-                    // LOadinhg
+                    self.showLoadingDialog()
                 } else {
-                    
+                    self.hideLoadingDialog(completion: nil)
                 }
+            }
+        }
+        
+        viewModel?.errorMessage.bind{ [weak self] message in
+            guard let self = self else { return }
+            guard let message = message else { return }
+            DispatchQueue.main.async {
+                let title = Constants.Common.titleError
+                self.showAlert(title: title, message: message, accept: nil)
             }
         }
         
@@ -495,7 +381,12 @@ class MovieDetailsVC: BaseVC {
             }
         })
         
-        
+        viewModel?.videoItems.bind({ [weak self] videoThumbnail in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.trailerCollectionView.reloadData()
+            }
+        })
         
         viewModel?.crew.bind({ [weak self] crewList in
             guard let self = self else { return }
@@ -511,35 +402,38 @@ class MovieDetailsVC: BaseVC {
             }
         })
         
-        viewModel?.streamingProvider.bind({ [weak self] provider in
+        viewModel?.streamingProvider.bind({ [weak self] providers in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                // FIXME: Mostrar u ocultar
-                self.whereCollectionView.reloadData()
-            }
-        })
-        viewModel?.rentProvider.bind({ [weak self] provider in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                // FIXME: Mostrar u ocultar
-                self.rentCollectionView.reloadData()
-            }
-        })
-        viewModel?.buyProvider.bind({ [weak self] provider in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                // FIXME: Mostrar u ocultar
-                self.buyCollectionView.reloadData()
+                guard let providers = providers else { return }
+                if !providers.isEmpty {
+                    self.streamingView.cellItems = providers
+                    self.contentStackView.addArrangedSubview(self.streamingView)
+                }
             }
         })
         
-        viewModel?.videoItems.bind({ [weak self] videoThumbnail in
+        viewModel?.rentProvider.bind({ [weak self] providers in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.trailerCollectionView.reloadData()
+                guard let providers = providers else { return }
+                if !providers.isEmpty {
+                    self.rentView.cellItems = providers
+                    self.contentStackView.addArrangedSubview(self.rentView)
+                }
             }
         })
         
+        viewModel?.buyProvider.bind({ [weak self] providers in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                guard let providers = providers else { return }
+                if !providers.isEmpty {
+                    self.buyView.cellItems = providers
+                    self.contentStackView.addArrangedSubview(self.buyView)
+                }
+            }
+        })
     }
 }
 
@@ -550,12 +444,6 @@ extension MovieDetailsVC : UICollectionViewDataSource {
         switch collectionView.tag {
         case 200:
             return viewModel?.similarFilms.value?.count ?? 0
-        case 300:
-            return viewModel?.streamingProvider.value?.count ?? 0
-        case 400:
-            return viewModel?.rentProvider.value?.count ?? 0
-        case 500:
-            return viewModel?.buyProvider.value?.count ?? 0
         case 600:
             return viewModel?.videoItems.value?.count ?? 0
         default:
@@ -569,27 +457,6 @@ extension MovieDetailsVC : UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.similarCollectionViewCellID, for: indexPath) as! SimilarFilmsCell
             guard let currentItem = viewModel?.similarFilms.value?[indexPath.row] else { return UICollectionViewCell() }
             cell.set(item: currentItem)
-            return cell
-        case 300:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.whereCollectionViewCellID, for: indexPath) as! WatchProviderCell
-            guard let currentItem = viewModel?.streamingProvider.value?[indexPath.row] else { return UICollectionViewCell() }
-            let url = "\(Constants.APIs.profileImageUrl)/\(currentItem.logoPath ?? "")"
-            guard let logoUrl = URL(string: url) else { return UICollectionViewCell() }
-            cell.set(imageUrl: logoUrl)
-            return cell
-        case 400:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.whereCollectionViewCellID, for: indexPath) as! WatchProviderCell
-            guard let currentItem = viewModel?.rentProvider.value?[indexPath.row] else { return UICollectionViewCell() }
-            let url = "\(Constants.APIs.profileImageUrl)/\(currentItem.logoPath ?? "")"
-            guard let logoUrl = URL(string: url) else { return UICollectionViewCell() }
-            cell.set(imageUrl: logoUrl)
-            return cell
-        case 500:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.whereCollectionViewCellID, for: indexPath) as! WatchProviderCell
-            guard let currentItem = viewModel?.buyProvider.value?[indexPath.row] else { return UICollectionViewCell() }
-            let url = "\(Constants.APIs.profileImageUrl)/\(currentItem.logoPath ?? "")"
-            guard let logoUrl = URL(string: url) else { return UICollectionViewCell() }
-            cell.set(imageUrl: logoUrl)
             return cell
         case 600:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.trailerCollectionViewCellID, for: indexPath) as! MovieThumbnailCell
@@ -615,8 +482,6 @@ extension MovieDetailsVC: UICollectionViewDelegateFlowLayout {
         switch collectionView.tag {
         case 200:
             return CGSize(width: 100, height: 180)
-        case 300, 400, 500:
-            return CGSize(width: 80, height: 80)
         case 600:
             return CGSize(width: 329, height: 185)
         default:
@@ -632,14 +497,5 @@ extension MovieDetailsVC: UICollectionViewDelegate {
             guard let currentItem = viewModel?.videoItems.value?[indexPath.row] else { return }
             viewModel?.playTrailerVideo(videoKey: currentItem.videoKey ?? "")
         }
-    }
-}
-
-
-
-import SwiftUI
-struct DetailsPreviews: PreviewProvider {
-    static var previews: some View {
-        GenericViewControllerPreview({ MovieDetailsVC() }).previewDevice(.init(stringLiteral: "iPhone 11"))
     }
 }

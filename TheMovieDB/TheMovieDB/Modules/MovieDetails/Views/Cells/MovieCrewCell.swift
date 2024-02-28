@@ -12,7 +12,6 @@ class MovieCrewCell: UICollectionViewCell {
     
     lazy var cellContent: UIView = {
         let view = UIView()
-        //view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
@@ -41,9 +40,6 @@ class MovieCrewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        // Cell content
-        //cellContent.backgroundColor = .lightGray
-
         // Adding
         cellContent.addSubview(photoImageView)
         cellContent.addSubview(nameLabel)
@@ -60,8 +56,6 @@ class MovieCrewCell: UICollectionViewCell {
         
         NSLayoutConstraint.activate([
             photoImageView.topAnchor.constraint(equalTo: self.cellContent.topAnchor),
-            //imgPhoto.leftAnchor.constraint(equalTo: self.cellContent.leftAnchor),
-            //imgPhoto.rightAnchor.constraint(equalTo: self.cellContent.rightAnchor),
             photoImageView.widthAnchor.constraint(equalToConstant: 100),
             photoImageView.heightAnchor.constraint(equalToConstant: 100)
         ])

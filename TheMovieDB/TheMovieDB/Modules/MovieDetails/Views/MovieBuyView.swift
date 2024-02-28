@@ -1,5 +1,5 @@
 //
-//  MovieRentView.swift
+//  MovieBuyView.swift
 //  TheMovieDB
 //
 //  Created by Geovanni Josue Chavez on 28/2/24.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-class MovieRentView: UIView {
-    
+class MovieBuyView: UIView {
+
     private let whereCollectionViewCellID = "whereCollectionViewCellID"
 
-    lazy var rentLabel: UILabel = {
+    lazy var buyLabel: UILabel = {
         let label = UILabel()
-        label.text = "Rent"
+        label.text = "Buy"
         label.textColor = .algaeGreen
         label.numberOfLines = 1
         label.font = .systemFont(ofSize: 18, weight: .regular)
@@ -21,13 +21,13 @@ class MovieRentView: UIView {
         return label
     }()
     
-    lazy var rentCollectionView: UICollectionView = {
+    lazy var buyCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
         flowLayout.minimumLineSpacing = 20
         flowLayout.minimumInteritemSpacing = 10
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        
+        collectionView.tag = 500
         collectionView.backgroundColor = .clear
         collectionView.register(WatchProviderCell.self, forCellWithReuseIdentifier: self.whereCollectionViewCellID)
         collectionView.delegate = self
@@ -41,7 +41,7 @@ class MovieRentView: UIView {
     
     var cellItems: [WatchProvider]! {
         didSet {
-            rentCollectionView.reloadData()
+            buyCollectionView.reloadData()
         }
     }
     
@@ -62,34 +62,33 @@ class MovieRentView: UIView {
     
     private func setup() {
         self.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(rentLabel)
-        addSubview(rentCollectionView)
+        addSubview(buyLabel)
+        addSubview(buyCollectionView)
     }
     
     private func createConstraints() {
-        
+
         NSLayoutConstraint.activate([
-            self.bottomAnchor.constraint(equalTo: rentCollectionView.bottomAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            rentLabel.topAnchor.constraint(equalTo: topAnchor, constant: 40),
-            rentLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 24),
-            rentLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -20),
+            self.bottomAnchor.constraint(equalTo: buyCollectionView.bottomAnchor, constant: 6)
         ])
         NSLayoutConstraint.activate([
-            rentCollectionView.topAnchor.constraint(equalTo: rentLabel.bottomAnchor, constant: 12),
-            rentCollectionView.leftAnchor.constraint(equalTo: leftAnchor),
-            rentCollectionView.rightAnchor.constraint(equalTo: rightAnchor),
-            rentCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            rentCollectionView.heightAnchor.constraint(equalToConstant: 80)
+            buyLabel.topAnchor.constraint(equalTo: topAnchor, constant: 40),
+            buyLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 24),
+            buyLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -20),
+        ])
+        NSLayoutConstraint.activate([
+            buyCollectionView.topAnchor.constraint(equalTo: buyLabel.bottomAnchor, constant: 12),
+            buyCollectionView.leftAnchor.constraint(equalTo: leftAnchor),
+            buyCollectionView.rightAnchor.constraint(equalTo: rightAnchor),
+            buyCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            buyCollectionView.heightAnchor.constraint(equalToConstant: 80)
         ])
     }
 
 }
 
 
-extension MovieRentView : UICollectionViewDataSource {
+extension MovieBuyView : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
             return cellItems.count
@@ -105,7 +104,7 @@ extension MovieRentView : UICollectionViewDataSource {
     }
 }
 
-extension MovieRentView: UICollectionViewDelegateFlowLayout {
+extension MovieBuyView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 4.0, left: 24.0, bottom: 4.0, right: 4.0)
     }

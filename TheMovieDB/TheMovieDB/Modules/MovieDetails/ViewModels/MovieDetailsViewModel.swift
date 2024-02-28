@@ -53,7 +53,6 @@ class MovieDetailsViewModel {
                 self.rentProvider.value = response.watchProviders.providerResults?.us?.rent
                 self.buyProvider.value = response.watchProviders.providerResults?.us?.buy
                 
-               
                 // Get trailer videos
                 guard let videos = response.videos.videos else { return }
                 let trailers = videos.filter { $0.type == "Trailer" }
@@ -65,8 +64,7 @@ class MovieDetailsViewModel {
                 }
                 self.videoItems.value = thumbnailsUrls
                         
-            case .failure(let error):
-                print(error)
+            case .failure:
                 errorMessage.value = Constants.Common.labelError
             }
         }

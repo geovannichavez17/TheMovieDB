@@ -1,5 +1,5 @@
 //
-//  MovieRentView.swift
+//  MovieStreamingView.swift
 //  TheMovieDB
 //
 //  Created by Geovanni Josue Chavez on 28/2/24.
@@ -7,27 +7,26 @@
 
 import UIKit
 
-class MovieRentView: UIView {
-    
+class MovieStreamingView: UIView {
+
     private let whereCollectionViewCellID = "whereCollectionViewCellID"
 
-    lazy var rentLabel: UILabel = {
+    lazy var streamingLabel: UILabel = {
         let label = UILabel()
-        label.text = "Rent"
+        label.text = "Where to watch"
         label.textColor = .algaeGreen
         label.numberOfLines = 1
         label.font = .systemFont(ofSize: 18, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    lazy var rentCollectionView: UICollectionView = {
+    lazy var streamingCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
         flowLayout.minimumLineSpacing = 20
         flowLayout.minimumInteritemSpacing = 10
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        
+        collectionView.tag = 300
         collectionView.backgroundColor = .clear
         collectionView.register(WatchProviderCell.self, forCellWithReuseIdentifier: self.whereCollectionViewCellID)
         collectionView.delegate = self
@@ -41,7 +40,7 @@ class MovieRentView: UIView {
     
     var cellItems: [WatchProvider]! {
         didSet {
-            rentCollectionView.reloadData()
+            streamingCollectionView.reloadData()
         }
     }
     
@@ -62,34 +61,33 @@ class MovieRentView: UIView {
     
     private func setup() {
         self.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(rentLabel)
-        addSubview(rentCollectionView)
+        addSubview(streamingLabel)
+        addSubview(streamingCollectionView)
     }
     
     private func createConstraints() {
-        
+
         NSLayoutConstraint.activate([
-            self.bottomAnchor.constraint(equalTo: rentCollectionView.bottomAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            rentLabel.topAnchor.constraint(equalTo: topAnchor, constant: 40),
-            rentLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 24),
-            rentLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -20),
+            self.bottomAnchor.constraint(equalTo: streamingCollectionView.bottomAnchor, constant: 6)
         ])
         NSLayoutConstraint.activate([
-            rentCollectionView.topAnchor.constraint(equalTo: rentLabel.bottomAnchor, constant: 12),
-            rentCollectionView.leftAnchor.constraint(equalTo: leftAnchor),
-            rentCollectionView.rightAnchor.constraint(equalTo: rightAnchor),
-            rentCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            rentCollectionView.heightAnchor.constraint(equalToConstant: 80)
+            streamingLabel.topAnchor.constraint(equalTo: topAnchor, constant: 40),
+            streamingLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 24),
+            streamingLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -20),
+        ])
+        NSLayoutConstraint.activate([
+            streamingCollectionView.topAnchor.constraint(equalTo: streamingLabel.bottomAnchor, constant: 12),
+            streamingCollectionView.leftAnchor.constraint(equalTo: leftAnchor),
+            streamingCollectionView.rightAnchor.constraint(equalTo: rightAnchor),
+            streamingCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            streamingCollectionView.heightAnchor.constraint(equalToConstant: 80)
         ])
     }
 
 }
 
 
-extension MovieRentView : UICollectionViewDataSource {
+extension MovieStreamingView : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
             return cellItems.count
@@ -105,7 +103,7 @@ extension MovieRentView : UICollectionViewDataSource {
     }
 }
 
-extension MovieRentView: UICollectionViewDelegateFlowLayout {
+extension MovieStreamingView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 4.0, left: 24.0, bottom: 4.0, right: 4.0)
     }

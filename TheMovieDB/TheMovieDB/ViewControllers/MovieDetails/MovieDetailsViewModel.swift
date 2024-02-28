@@ -14,7 +14,9 @@ class MovieDetailsViewModel {
     var videos: Observable<Videos> = Observable(nil)
     var crew: Observable<[Cast]> = Observable(nil)
     var similarFilms: Observable<[SimilarResult]> = Observable(nil)
-    var watchProviders: Observable<WatchProviders> = Observable(nil)
+    var streamingProvider: Observable<[WatchProvider]> = Observable(nil)
+    var rentProvider: Observable<[WatchProvider]> = Observable(nil)
+    var buyProvider: Observable<[WatchProvider]> = Observable(nil)
     var isLoading: Observable<Bool> = Observable(false)
     
     let moviesService: MoviesService?
@@ -42,7 +44,9 @@ class MovieDetailsViewModel {
                 self.videos.value = response.videos
                 self.crew.value = response.credits.cast
                 self.similarFilms.value = response.similar.similarResults
-                self.watchProviders.value = response.watchProviders
+                self.streamingProvider.value = response.watchProviders.providerResults?.us?.flatrate
+                self.rentProvider.value = response.watchProviders.providerResults?.us?.rent
+                self.buyProvider.value = response.watchProviders.providerResults?.us?.buy
             case .failure(let failure):
                 print("error al obtener detalles")
             }

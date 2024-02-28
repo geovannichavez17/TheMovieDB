@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MoviesVC: BaseVC, MoviesView {
+class MoviesVC: BaseVC {
 
     // Global
     let collectionViewCellID = "collectionViewCellID"
@@ -43,7 +43,7 @@ class MoviesVC: BaseVC, MoviesView {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        renderUI(filters: ["Now Playing", "Popular", "Top Rated", "Upcoming"])
+        renderUI()
         bindViewModel()
     }
     
@@ -52,14 +52,13 @@ class MoviesVC: BaseVC, MoviesView {
         viewModel?.retrieveMovies(from: selectedFilter)
     }
     
-    func renderUI(filters: [String]) {
-        // Creates menu action
-        
+    func renderUI() {
+        // Navigation bar
         self.setNavigationBar(title: "Movies")
         self.configureContentView()
         
-        // DEFINITION
-        scFilters = UISegmentedControl(items: filters)
+        // Elements
+        scFilters = UISegmentedControl(items: Categories.allCases.map { $0.rawValue })
         scFilters.selectedSegmentIndex = 0
         scFilters.selectedSegmentTintColor = .customGray
         scFilters.backgroundColor = .lightLayer
@@ -70,100 +69,62 @@ class MoviesVC: BaseVC, MoviesView {
         scFilters.translatesAutoresizingMaskIntoConstraints = false
         scFilters.addTarget(self, action: #selector(onFilterSelected), for: .valueChanged)
         
-        
-        // ADDING
+        // Adding to view
         self.contentView.addSubview(scFilters)
         self.contentView.addSubview(gridCollectionView)
         
         
-        // POSITIONS
+        // Layout
         NSLayoutConstraint.activate([
             scFilters.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 16),
             scFilters.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 23),
             scFilters.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -23),
             scFilters.heightAnchor.constraint(equalToConstant: 28)
         ])
-        
         NSLayoutConstraint.activate([
             gridCollectionView.topAnchor.constraint(equalTo: scFilters.bottomAnchor, constant: 23),
             gridCollectionView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 9),
             gridCollectionView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
             gridCollectionView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -9)
         ])
-
-        // Next render
-        //self.presenter.retreieveTVShows(filter: .popular)
     }
     
-    func renderTVShows() {
-        /*self.tvShowsList = tvShows
-        
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 8
-        flowLayout.minimumInteritemSpacing = 4
-        
-        if gridCollectionView == nil {
-            gridCollectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-            gridCollectionView?.backgroundColor = .clear
-            gridCollectionView?.register(TVShowViewCell.self, forCellWithReuseIdentifier: self.collectionViewCellID)
-            gridCollectionView?.delegate = self
-            gridCollectionView?.dataSource = self
-            gridCollectionView?.translatesAutoresizingMaskIntoConstraints = false
-            
-            // Adding to view
-            self.contentView.addSubview(gridCollectionView)
-            
-            // AutoLayout
-            NSLayoutConstraint.activate([
-                gridCollectionView.topAnchor.constraint(equalTo: scFilters.bottomAnchor, constant: 23),
-                gridCollectionView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 9),
-                gridCollectionView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
-                gridCollectionView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -9)
-            ])
-        }
-        else {
-            gridCollectionView?.reloadData()
-        }*/
-    }
     
     private func bindViewModel() {
         viewModel?.isLoading.bind { [weak self] isLoading in
             guard let self = self, let isLoading = isLoading else { return }
             DispatchQueue.main.async {
                 if isLoading {
-                    // LOadinhg
+                    self.showLoadingDialog()
                 } else {
-                    
+                    self.hideLoadingDialog(completion: nil)
                 }
+            }
+        }
+        
+        viewModel?.errorMessage.bind{ [weak self] message in
+            guard let self = self else { return }
+            guard let message = message else { return }
+            DispatchQueue.main.async {
+                let title = Constants.Common.titleError
+                self.showAlert(title: title, message: message, accept: nil)
             }
         }
         
         viewModel?.moviesDataSource.bind { [weak self] movies in
             guard let self = self else { return }
-            //self.gridCollectionView.reloadData()
             DispatchQueue.main.async {
                 self.gridCollectionView.reloadData()
             }
         }
         
     }
-    
-    func showGenericDialog(content: String, completion: (() -> Void)?) {
-        var dialogData = DialogModel()
-        dialogData.title = "TV Shows"
-        dialogData.content = content
-        dialogData.buttonAccept = Constants.Common.btnAccept
-        self.showDialog(dialogData: dialogData, accept: completion)
-    }
-    
-    // MARK: Other methods
+
     @objc func onFilterSelected() {
         let index = scFilters.selectedSegmentIndex
         guard let filter = scFilters.titleForSegment(at: index) else { return }
         guard let category = Categories(rawValue: filter) else { return }
         selectedFilter = category
-        
         viewModel?.retrieveMovies(from: selectedFilter)
     }
 }
@@ -171,14 +132,12 @@ class MoviesVC: BaseVC, MoviesView {
 extension MoviesVC : UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel?.moviesDataSource.value?.count ?? 0
-        //return viewModel.moviesList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.collectionViewCellID, for: indexPath) as! MoviesViewCell
         guard let item = viewModel?.moviesDataSource.value?[indexPath.row] else { return cell }
         cell.set(item: item)
-        //cell.set(item: viewModel.moviesList[indexPath.row])
         return cell
     }
 }
@@ -198,7 +157,7 @@ extension MoviesVC: UICollectionViewDelegateFlowLayout {
 extension MoviesVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let selectedItem = viewModel?.moviesDataSource.value?[indexPath.row] else { return }
-        viewModel?.coordinator.navigateToDetails(movie: selectedItem)
+        viewModel?.coordinator?.navigateToDetails(movie: selectedItem)
     }
 }
 

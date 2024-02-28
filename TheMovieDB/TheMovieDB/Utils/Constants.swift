@@ -10,16 +10,12 @@ import Foundation
 struct Constants {
     
     struct Common {
-        static let btnAccept = "OK"
-        static let btnCancel = "Cancel"
-        static let btnContinue = "Continue"
-        static let lblLoading = "Please wait…"
+        static let acceptButton = "OK"
+        static let cancelButton = "Cancel"
+        static let continueButton = "Continue"
+        static let loadingLabel = "Please wait…"
         static let titleError = "Ups!"
-        static let lblNoInternetTitle = "No Internet Connection"
-        static let lblNoInternet = "Check your internet connection"
         static let labelError = "Something went wrong, please try again…"
-        static let lblServerErrorTitle = "Check your internet connection"
-        static let lblServerError = "Unable to reach the servers, please try again…"
     }
     
     struct APIs {

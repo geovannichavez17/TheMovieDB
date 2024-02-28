@@ -136,37 +136,31 @@ class BaseVC: UIViewController {
         ])
     }
     
-    func showLoadingDialog(message: String) {
+    func showLoadingDialog(message: String? = nil) {
         loadingDialog = LoadingDialogVC()
-        loadingDialog!.dialogText = message
-        loadingDialog!.modalPresentationStyle = .overFullScreen
-        loadingDialog!.modalTransitionStyle = .crossDissolve
+        loadingDialog?.dialogText = message ?? Constants.Common.loadingLabel
+        loadingDialog?.modalPresentationStyle = .overFullScreen
+        loadingDialog?.modalTransitionStyle = .crossDissolve
         DispatchQueue.main.async {
             self.present(self.loadingDialog!, animated: true, completion: nil)
         }
     }
     
     func hideLoadingDialog(completion: (() -> Void)?) {
-        loadingDialog!.dismissDialog(completion: completion)
+        guard let loadingDialog = loadingDialog else { return }
+        loadingDialog.dismissDialog(completion: completion)
     }
     
-    func showDialog(dialogData: DialogModel, accept: (() -> Void)?) {
-        
-        let alert = UIAlertController(title: dialogData.title, message: dialogData.content, preferredStyle: .alert)
-        let dismiss = UIAlertAction(title: dialogData.buttonAccept ?? Constants.Common.btnAccept, style: .default) { (action:UIAlertAction) in
+    func showAlert(title: String, message: String, accept: (() -> Void)?) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let dismiss = UIAlertAction(title: Constants.Common.acceptButton, style: .default) { (action:UIAlertAction) in
             (accept ?? {})()
         }
         alert.addAction(dismiss)
         self.present(alert, animated: true, completion: nil)
     }
     
-    func showInternetConnectionError(onDismiss: (() -> Void)?) {
-        var dialogData = DialogModel()
-        dialogData.title = Constants.Common.lblNoInternetTitle
-        dialogData.content = Constants.Common.lblNoInternet
-        dialogData.buttonAccept = Constants.Common.btnAccept
-        self.showDialog(dialogData: dialogData, accept: nil)
-    }
+    
     
     
     @objc func navigateBack(sender: Any?) {

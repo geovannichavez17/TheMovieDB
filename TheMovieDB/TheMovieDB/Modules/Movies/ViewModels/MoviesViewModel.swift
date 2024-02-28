@@ -16,7 +16,7 @@ class MoviesViewModel {
     
     private let moviesService: MoviesService?
     var coordinator: MoviesCoordinator?
-    //var currentFilter: Categories?
+    var currentFilter: Categories?
     
     var moviesDataSource: Observable<[Movie]> = Observable(nil)
     var isLoading: Observable<Bool> = Observable(false)
@@ -28,15 +28,14 @@ class MoviesViewModel {
         self.moviesService = MoviesService()
     }
     
-    func select(category: String) {
-        guard let category = Categories(rawValue: category) else { return }
-        
-        retrieveMovies(from: category)
-    }
-    
     func retrieveMovies(from category: Categories) {
         if isLoading.value ?? true { return }
         isLoading.value = true
+        
+        if currentFilter != category {
+            moviesDataSource.value = nil
+        }
+        currentFilter = category
         
         switch category {
         case .nowPlaying:

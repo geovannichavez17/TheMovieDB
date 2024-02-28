@@ -16,6 +16,7 @@ class MoviesViewModel {
     
     private let moviesService: MoviesService?
     var coordinator: MoviesCoordinator?
+    //var currentFilter: Categories?
     
     var moviesDataSource: Observable<[Movie]> = Observable(nil)
     var isLoading: Observable<Bool> = Observable(false)
@@ -29,6 +30,7 @@ class MoviesViewModel {
     
     func select(category: String) {
         guard let category = Categories(rawValue: category) else { return }
+        
         retrieveMovies(from: category)
     }
     
@@ -36,42 +38,52 @@ class MoviesViewModel {
         if isLoading.value ?? true { return }
         isLoading.value = true
         
-        
         switch category {
         case .nowPlaying:
             moviesService?.getNowPlayingMovies(page: nowPlayingPage) { [weak self] result in
                 guard let self = self else { return }
                 self.isLoading.value = false
-                handleService(result: result)
+                self.nowPlayingPage += 1
+                handleService(result: result, category: category)
             }
         case .popular:
             moviesService?.getPopularMovies(page: nowPlayingPage) { [weak self] result in
                 guard let self = self else { return }
                 self.isLoading.value = false
-                handleService(result: result)
+                self.popularPage += 1
+                handleService(result: result, category: category)
             }
         case .topRated:
             moviesService?.getTopRatedMovies(page: topRatedPage) { [weak self] result in
                 guard let self = self else { return }
                 self.isLoading.value = false
-                handleService(result: result)
+                self.topRatedPage += 1
+                handleService(result: result, category: category)
             }
         case .upcoming:
             moviesService?.getUpcomingMovies(page: upcomingPage) { [weak self] result in
                 guard let self = self else { return }
                 self.isLoading.value = false
-                handleService(result: result)
+                self.upcomingPage += 1
+                handleService(result: result, category: category)
             }
         }
     }
     
-    private func handleService(result: Result<MoviesReponse, Error>) {
-        moviesDataSource.value = nil
+    private func handleService(result: Result<MoviesReponse, Error>, category: Categories) {
         errorMessage.value = nil
+        /*if category != currentFilter {
+            moviesDataSource.value = nil
+        }*/
         
         switch result {
         case .success(let response):
-            moviesDataSource.value = response.movies
+            if moviesDataSource.value == nil {
+                moviesDataSource.value = response.movies
+            } else {
+                guard let movies = response.movies else { return }
+                moviesDataSource.value?.append(contentsOf: movies)
+            }
         case .failure:
             errorMessage.value = Constants.Common.labelError
         }

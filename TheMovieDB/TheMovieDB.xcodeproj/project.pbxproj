@@ -169,7 +169,7 @@
 				D3A25FE02B8AD7D5009D8D2B /* Utils */,
 				D3A25FE52B8ADBFD009D8D2B /* Models */,
 				D3A25FD92B8AD56B009D8D2B /* Navigation */,
-				D3A25FDA2B8AD58C009D8D2B /* ViewControllers */,
+				D3A25FDA2B8AD58C009D8D2B /* Modules */,
 				D3A25FA92B8ACDB5009D8D2B /* AppDelegate.swift */,
 				D3A25FAB2B8ACDB5009D8D2B /* SceneDelegate.swift */,
 				D3A25FAD2B8ACDB5009D8D2B /* ViewController.swift */,
@@ -189,15 +189,15 @@
 			path = Navigation;
 			sourceTree = "<group>";
 		};
-		D3A25FDA2B8AD58C009D8D2B /* ViewControllers */ = {
+		D3A25FDA2B8AD58C009D8D2B /* Modules */ = {
 			isa = PBXGroup;
 			children = (
 				D3C020E62B8DAA36003C237F /* MovieDetails */,
-				D3A25FEC2B8AE130009D8D2B /* Home */,
+				D3A25FEC2B8AE130009D8D2B /* Movies */,
 				D3A25FE42B8ADAD7009D8D2B /* Modals */,
 				D3A25FDB2B8AD5BC009D8D2B /* Base */,
 			);
-			path = ViewControllers;
+			path = Modules;
 			sourceTree = "<group>";
 		};
 		D3A25FDB2B8AD5BC009D8D2B /* Base */ = {
@@ -247,13 +247,13 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		D3A25FEC2B8AE130009D8D2B /* Home */ = {
+		D3A25FEC2B8AE130009D8D2B /* Movies */ = {
 			isa = PBXGroup;
 			children = (
 				D3A25FED2B8AE14D009D8D2B /* ViewModels */,
 				D3A25FFB2B8C315B009D8D2B /* Views */,
 			);
-			path = Home;
+			path = Movies;
 			sourceTree = "<group>";
 		};
 		D3A25FED2B8AE14D009D8D2B /* ViewModels */ = {

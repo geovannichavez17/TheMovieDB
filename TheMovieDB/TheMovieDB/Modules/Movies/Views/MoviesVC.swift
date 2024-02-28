@@ -166,6 +166,9 @@ extension MoviesVC: UIScrollViewDelegate {
         let position = scrollView.contentOffset.y
         if position > (gridCollectionView.contentSize.height-100 - gridCollectionView.frame.size.height) {
             print("fetch more data")
+            guard let isLoading = viewModel?.isLoading.value else { return }
+            guard !isLoading else { return }
+            viewModel?.retrieveMovies(from: selectedFilter)
         }
     }
 }

@@ -13,7 +13,6 @@ class BaseVC: UIViewController {
     var transparentNavbar = false
     var loadingDialog: LoadingDialogVC?
     
-    
     // Views
     lazy var contentView: UIView = {
         let contentView = UIView(frame: .zero)
@@ -45,7 +44,6 @@ class BaseVC: UIViewController {
         scrollViewContent.translatesAutoresizingMaskIntoConstraints = false
         return scrollViewContent
     }()
-    
     
     
     override func viewDidLoad() {
@@ -160,9 +158,6 @@ class BaseVC: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    
-    
-    
     @objc func navigateBack(sender: Any?) {
         if let navigator = self.navigationController {
             navigator.popViewController(animated: true)
@@ -172,8 +167,6 @@ class BaseVC: UIViewController {
         }
     }
     
-    
-    // MARK: Other methods
     fileprivate func createNavbarAppereance(_ background: NavbarBackground) -> UINavigationBarAppearance {
         // Navbar apperance
         let appearance = UINavigationBarAppearance()
@@ -202,9 +195,7 @@ enum NavbarBackground {
 // MARK: -  View Controllers Preview
 
 import SwiftUI
-
 struct GenericViewControllerPreview: UIViewControllerRepresentable {
-
     private let onViewControllerSet: () -> BaseVC
 
     init(_ viewControllerToBuild: @escaping(() -> BaseVC)) {

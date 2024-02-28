@@ -10,9 +10,9 @@ import Foundation
 
 // MARK: - Welcome
 struct MoviesReponse: Codable {
-    let page: Int
-    let movies: [Movie]
-    let totalPages, totalResults: Int
+    let page: Int?
+    let movies: [Movie]?
+    let totalPages, totalResults: Int?
 
     enum CodingKeys: String, CodingKey {
         case page
@@ -29,15 +29,15 @@ struct Dates: Codable {
 
 // MARK: - Result
 struct Movie: Codable {
-    let adult: Bool
-    let backdropPath: String
-    let id: Int
-    let originalTitle, overview: String
-    let popularity: Double
-    let posterPath, releaseDate, title: String
-    let video: Bool
-    let voteAverage: Double
-    let voteCount: Int
+    let adult: Bool?
+    let backdropPath: String?
+    let id: Int?
+    let originalTitle, overview: String?
+    let popularity: Double?
+    let posterPath, releaseDate, title: String?
+    let video: Bool?
+    let voteAverage: Double?
+    let voteCount: Int?
 
     enum CodingKeys: String, CodingKey {
         case adult

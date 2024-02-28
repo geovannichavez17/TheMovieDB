@@ -140,9 +140,10 @@ class MoviesViewCell: UICollectionViewCell {
     func set(item: Movie) {
         lblShowName.text = item.originalTitle
         lblOverview.text = item.overview
-        lblRating.text = String(format: "⭑ %.1f", item.voteAverage)
+        lblRating.text = String(format: "⭑ %.1f", item.voteAverage ?? 0)
         lblDate.text = item.releaseDate
-        guard let posterUrl = URL(string: "\(Constants.APIs.posterImageUrl)\(item.posterPath)") else { return }
+        let posterPath = "\(Constants.APIs.posterImageUrl)\(item.posterPath ?? "")"
+        guard let posterUrl = URL(string: posterPath) else { return }
         imgBannerShow.af.setImage(withURL: posterUrl, placeholderImage: UIImage(named: "ic_picture_placeholder"))
 
     }

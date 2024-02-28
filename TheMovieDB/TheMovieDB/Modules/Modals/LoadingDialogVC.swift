@@ -22,7 +22,7 @@ class LoadingDialogVC: UIViewController {
         lazy var contentLabel: UILabel = {
             let label = UILabel()
             label.translatesAutoresizingMaskIntoConstraints = false
-            label.text = dialogText ?? "Por favor, espere…"
+            label.text = dialogText ?? Constants.Common.loadingLabel
             label.textColor = .white
             label.textAlignment = .center
             label.numberOfLines = 0
@@ -35,7 +35,6 @@ class LoadingDialogVC: UIViewController {
             indicator.translatesAutoresizingMaskIntoConstraints = false
             indicator.style = .large
             indicator.color = .white
-            // The indicator should be animating when the view appears.
             indicator.startAnimating()
             return indicator
         }()
@@ -43,9 +42,6 @@ class LoadingDialogVC: UIViewController {
         var blurEffectView: UIVisualEffectView = {
             let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
             blurEffectView.alpha = 0.2
-            
-            // Setting the autoresizing mask to flexible for width and height will ensure the blurEffectView
-            // is the same size as its parent view.
             blurEffectView.autoresizingMask = [
                 .flexibleWidth, .flexibleHeight
             ]

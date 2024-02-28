@@ -10,6 +10,7 @@ import UIKit
 
 class MovieDetailsViewModel {
     
+    // Observables
     var movie: Observable<Movie> = Observable(nil)
     var videos: Observable<Video> = Observable(nil)
     var crew: Observable<[Cast]> = Observable(nil)
@@ -19,10 +20,13 @@ class MovieDetailsViewModel {
     var buyProvider: Observable<[WatchProvider]> = Observable(nil)
     var videoItems: Observable<[VideoThumbnail]> = Observable(nil)
     var isLoading: Observable<Bool> = Observable(false)
-    var thumbnailsUrls: [VideoThumbnail]?
+    var errorMessage: Observable<String> = Observable(nil)
     
+    // Properties
     let moviesService: MoviesService?
     let coordinator: MoviesCoordinator?
+    var thumbnailsUrls: [VideoThumbnail]?
+    
     
     init(coordinator: MoviesCoordinator, movie: Movie) {
         self.movie.value = movie
@@ -30,7 +34,6 @@ class MovieDetailsViewModel {
         moviesService = MoviesService()
         thumbnailsUrls = [VideoThumbnail]()
     }
-    
     
     func retrieveMovieDetails() {
         if isLoading.value ?? true { return }
@@ -43,8 +46,6 @@ class MovieDetailsViewModel {
             
             switch result {
             case .success(let response):
-                print(response)
-                //self.videos.value = response.videos
                 self.crew.value = response.credits.cast
                 self.similarFilms.value = response.similar.similarResults
                 self.streamingProvider.value = response.watchProviders.providerResults?.us?.flatrate
@@ -52,6 +53,7 @@ class MovieDetailsViewModel {
                 self.buyProvider.value = response.watchProviders.providerResults?.us?.buy
                 
                
+                // Get trailer videos
                 guard let videos = response.videos.videos else { return }
                 let trailers = videos.filter { $0.type == "Trailer" }
                 
@@ -61,10 +63,9 @@ class MovieDetailsViewModel {
                     thumbnailsUrls?.append(newItem)
                 }
                 self.videoItems.value = thumbnailsUrls
-                
                         
-            case .failure(let failure):
-                print("error al obtener detalles")
+            case .failure:
+                errorMessage.value = Constants.Common.labelError
             }
         }
     }

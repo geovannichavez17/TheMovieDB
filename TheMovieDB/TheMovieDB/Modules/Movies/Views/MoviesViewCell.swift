@@ -34,7 +34,7 @@ class MoviesViewCell: UICollectionViewCell {
     
     lazy var lblShowName: UILabel = {
         let label = UILabel()
-        label.textColor = .algaeGreen
+        label.textColor = .mainGreen
         label.numberOfLines = 2
         label.font = .systemFont(ofSize: 14, weight: .semibold)
         label.adjustsFontSizeToFitWidth = true
@@ -44,7 +44,7 @@ class MoviesViewCell: UICollectionViewCell {
 
     var lblRating: UILabel = {
         let label = UILabel()
-        label.textColor = .algaeGreen
+        label.textColor = .mainGreen
         label.numberOfLines = 2
         label.font = .systemFont(ofSize: 11, weight: .semibold)
         label.adjustsFontSizeToFitWidth = true
@@ -54,7 +54,7 @@ class MoviesViewCell: UICollectionViewCell {
     
     var lblDate: UILabel = {
         let label = UILabel()
-        label.textColor = .algaeGreen
+        label.textColor = .mainGreen
         label.numberOfLines = 2
         label.font = .systemFont(ofSize: 11, weight: .semibold)
         label.adjustsFontSizeToFitWidth = true

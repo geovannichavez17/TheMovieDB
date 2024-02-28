@@ -14,7 +14,7 @@ class SimilarMoviesView: UIView {
     lazy var similarLabel: UILabel = {
         let label = UILabel()
         label.text = "Similar Movies"
-        label.textColor = .algaeGreen
+        label.textColor = .mainGreen
         label.numberOfLines = 1
         label.font = .systemFont(ofSize: 18, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false

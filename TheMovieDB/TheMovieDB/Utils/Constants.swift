@@ -29,6 +29,7 @@ struct Constants {
         static let popularPaged = "movie/popular?page="
         static let topRatedPaged = "movie/top_rated?page="
         static let upcomingPaged = "movie/upcoming?page="
+        static let movieDetails = "?append_to_response=videos,credits,similar,watch/providers"
         
         static let youTubeThumbnailUrl = "http://img.youtube.com/vi"
         static let youTubeApiKey = "AIzaSyAVgq_STlzDgmh2bi0IRCRNvuUh3yzIGag"
@@ -37,11 +38,5 @@ struct Constants {
         static let thumbnailResolution = "sddefault.jpg"
         
         static let token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhYjY1MDU2YWVjNDcxOGMwOTIxNGQ0YTdlY2NkNTg4MCIsInN1YiI6IjYwMzA3OGFhN2Y2YzhkMDAzZjBmN2FlYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.m1iwx98S8xTSrFWbDFbL2rzqaIBvNOXjcyf1ycJ9ak8"
-    }
-    
-    struct Formats {
-        static let UTCTime = "yyyy-MM-dd HH:mm:ss 'UTC'"
-        static let YYYY_MM_DD = "YYYY-MM-DD"
-        static let MMM_dd__yyyy = "MMM dd, yyyy"
     }
 }

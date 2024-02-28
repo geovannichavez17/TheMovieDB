@@ -9,17 +9,7 @@ import UIKit
 
 extension UIColor {
     
-    static let darkBlue = UIColor(named: "darkBlue")!
-    static let primaryBlue = UIColor(named: "primaryBlue")!
-    static let primaryLightGray = UIColor(named: "primaryLightGray")!
-    static let pgLightGray = UIColor(named: "lightGray")!
     static let transparentBlack = UIColor(named: "transparentBlack")!
-    static let dimmedBlack_25 = UIColor(named: "dimmedBlack_25")!
-    static let ghostWhite = UIColor(named: "ghostWhite")!
-    static let lotionWhite = UIColor(named: "lotionWhite")!
-    static let persianGreen = UIColor(named: "persianGreen")!
-    static let mediumSpringGreen = UIColor(named: "mediumSpringGreen")!
-    static let customAqua = UIColor(named: "aqua")!
     
     @nonobjc class var dark: UIColor {
       return UIColor(red: 26.0 / 255.0, green: 40.0 / 255.0, blue: 46.0 / 255.0, alpha: 1.0)
@@ -29,16 +19,12 @@ extension UIColor {
         return UIColor(red: 39.0 / 255.0, green: 37.0 / 255.0, blue: 47.0 / 255.0, alpha: 1.0)
     }
 
-    @nonobjc class var algaeGreen: UIColor {
+    @nonobjc class var mainGreen: UIColor {
       return UIColor(red: 33.0 / 255.0, green: 205.0 / 255.0, blue: 101.0 / 255.0, alpha: 1.0)
     }
     
-    @nonobjc class var algaeGreenDisabled: UIColor {
-      return UIColor(red: 33.0 / 255.0, green: 205.0 / 255.0, blue: 101.0 / 255.0, alpha: 0.6)
-    }
-
-    @nonobjc class var greenBlue: UIColor {
-      return UIColor(red: 1.0 / 255.0, green: 210.0 / 255.0, blue: 119.0 / 255.0, alpha: 1.0)
+    @nonobjc class var customGray: UIColor {
+        return UIColor(red: 99.0/255.0, green: 99.0/255.0, blue: 102.00/255.0, alpha: 1.0)
     }
     
     @nonobjc class var semiTransparentBlack: UIColor {
@@ -51,10 +37,6 @@ extension UIColor {
     
     @nonobjc class var transparent: UIColor {
         return UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 0.0)
-    }
-    
-    @nonobjc class var customGray: UIColor {
-        return UIColor(red: 99.0/255.0, green: 99.0/255.0, blue: 102.00/255.0, alpha: 1.0)
     }
     
     @nonobjc class var lightLayer: UIColor {

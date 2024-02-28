@@ -14,7 +14,7 @@ class MovieRentView: UIView {
     lazy var rentLabel: UILabel = {
         let label = UILabel()
         label.text = "Rent"
-        label.textColor = .algaeGreen
+        label.textColor = .mainGreen
         label.numberOfLines = 1
         label.font = .systemFont(ofSize: 18, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false

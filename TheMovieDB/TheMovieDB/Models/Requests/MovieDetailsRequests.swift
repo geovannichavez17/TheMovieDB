@@ -74,10 +74,6 @@ struct Video: Codable {
 
 
 // MARK: - Credits
-/*struct CreditItem: Codable {
-    let credits: Credits?
-}*/
-
 struct Credits: Codable {
     let cast, crew: [Cast]?
     

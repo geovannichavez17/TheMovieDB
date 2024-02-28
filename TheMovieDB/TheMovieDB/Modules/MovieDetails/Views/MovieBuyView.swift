@@ -14,7 +14,7 @@ class MovieBuyView: UIView {
     lazy var buyLabel: UILabel = {
         let label = UILabel()
         label.text = "Buy"
-        label.textColor = .algaeGreen
+        label.textColor = .mainGreen
         label.numberOfLines = 1
         label.font = .systemFont(ofSize: 18, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false

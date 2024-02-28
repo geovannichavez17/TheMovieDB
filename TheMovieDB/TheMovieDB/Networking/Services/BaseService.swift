@@ -39,46 +39,6 @@ class BaseService<T: BaseTarget> {
                 completionHandler(.failure(error))
             }
         }
-        
-        /*AF.request(target.baseURL + target.path, method: method, parameters: parameters.0, encoding: parameters.1, headers: headers).responseJSON { (response) in
-            // 6
-            guard let statusCode = response.response?.statusCode else {
-                print("StatusCode not found")
-                completionHandler(.failure(NSError()))
-                return
-            }
-            
-            // 7
-            if statusCode == 200 {
-                
-                // 8
-                guard let jsonResponse = try? response.result.get() else {
-                    print("jsonResponse error")
-                    completionHandler(.failure(NSError()))
-                    return
-                }
-                // 9
-                guard let theJSONData = try? JSONSerialization.data(withJSONObject: jsonResponse, options: []) else {
-                    print("theJSONData error")
-                    completionHandler(.failure(NSError()))
-                    return
-                }
-                // 10
-                guard let responseObj = try? JSONDecoder().decode(M.self, from: theJSONData) else {
-                    print("responseObj error")
-                    completionHandler(.failure(NSError()))
-                    return
-                }
-                completionHandler(.success(responseObj))
-                
-            } else {
-                print("error statusCode is \(statusCode)")
-                completionHandler(.failure(NSError()))
-                
-            }
-            
-        }*/
-        
     }
     
     

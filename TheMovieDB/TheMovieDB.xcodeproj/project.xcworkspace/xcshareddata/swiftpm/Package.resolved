@@ -17,6 +17,24 @@
         "revision" : "1eaf3b6c6882bed10f6e7b119665599dd2329aa1",
         "version" : "4.3.0"
       }
+    },
+    {
+      "identity" : "google-api-objectivec-client-for-rest",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/google-api-objectivec-client-for-rest.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "430f209f4850a91d8613af36d93c9c0d75dfcf0e"
+      }
+    },
+    {
+      "identity" : "gtm-session-fetcher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/gtm-session-fetcher.git",
+      "state" : {
+        "revision" : "76135c9f4e1ac85459d5fec61b6f76ac47ab3a4c",
+        "version" : "3.3.1"
+      }
     }
   ],
   "version" : 2

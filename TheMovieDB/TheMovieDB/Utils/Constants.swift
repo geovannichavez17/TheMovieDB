@@ -34,6 +34,8 @@ struct Constants {
         static let movies = "/movie/now_playing"
         static let moviesPaged = "/movie/now_playing?page=1"
         
+        static let youTubeApiKey = "AIzaSyAVgq_STlzDgmh2bi0IRCRNvuUh3yzIGag"
+        
         /*static let auth_token = "\(baseUrl)/authentication/token/new?api_key=\(apiKey)"
         static let signin = "\(baseUrl)/authentication/token/validate_with_login?api_key=\(apiKey)"
         static let get_popular = "\(baseUrl)tv/popular?api_key=\(apiKey)"

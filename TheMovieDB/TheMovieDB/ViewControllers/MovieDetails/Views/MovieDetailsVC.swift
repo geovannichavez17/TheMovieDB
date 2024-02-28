@@ -10,6 +10,7 @@ import UIKit
 class MovieDetailsVC: BaseVC {
     
     private let crewCollectionViewCellID = "crewCollectionViewCellID"
+    private let similarCollectionViewCellID = "similarCollectionViewCellID"
     
     lazy var bannerImage: UIImageView = {
         let imageView = UIImageView()
@@ -109,7 +110,7 @@ class MovieDetailsVC: BaseVC {
         return label
     }()
     
-    lazy var crewContainer: UILayoutGuide = {
+    lazy var crewGuide: UILayoutGuide = {
         let guide = UILayoutGuide()
         guide.identifier = "crewContainer"
         return guide
@@ -141,12 +142,33 @@ class MovieDetailsVC: BaseVC {
         return label
     }()
     
-    lazy var similarContainer: UIView = {
+    lazy var similarGuide: UILayoutGuide = {
+        let guide = UILayoutGuide()
+        guide.identifier = "similarGuide"
+        return guide
+    }()
+    
+    lazy var similarCollectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .horizontal
+        flowLayout.minimumLineSpacing = 20
+        flowLayout.minimumInteritemSpacing = 10
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.tag = 200
+        collectionView.backgroundColor = .clear
+        collectionView.register(SimilarFilmsCell.self, forCellWithReuseIdentifier: self.similarCollectionViewCellID)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
+    }()
+    
+    /*lazy var similarContainer: UIView = {
         let view = UIView()
         view.backgroundColor = .magenta
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
-    }()
+    }()*/
     
     
     lazy var whereLabel: UILabel = {
@@ -241,9 +263,10 @@ class MovieDetailsVC: BaseVC {
         content.addSubview(trailerCollectionView)
         content.addSubview(crewLabel)
         content.addSubview(crewCollectionView)
-        content.addLayoutGuide(crewContainer)
+        content.addLayoutGuide(crewGuide)
         content.addSubview(similarLabel)
-        content.addSubview(similarContainer)
+        content.addLayoutGuide(similarGuide)
+        content.addSubview(similarCollectionView)
         content.addSubview(whereLabel)
         content.addSubview(whereContainer)
         content.addSubview(rentLabel)
@@ -297,32 +320,40 @@ class MovieDetailsVC: BaseVC {
             crewLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -20),
         ])
         NSLayoutConstraint.activate([
-            crewContainer.topAnchor.constraint(equalTo: crewLabel.bottomAnchor, constant: 12),
-            crewContainer.leftAnchor.constraint(equalTo: content.leftAnchor),
-            crewContainer.rightAnchor.constraint(equalTo: content.rightAnchor),
-            crewContainer.heightAnchor.constraint(equalToConstant: 125),
+            crewGuide.topAnchor.constraint(equalTo: crewLabel.bottomAnchor, constant: 12),
+            crewGuide.leftAnchor.constraint(equalTo: content.leftAnchor),
+            crewGuide.rightAnchor.constraint(equalTo: content.rightAnchor),
+            crewGuide.heightAnchor.constraint(equalToConstant: 125),
         ])
         
         NSLayoutConstraint.activate([
-            crewCollectionView.topAnchor.constraint(equalTo: crewContainer.topAnchor),
-            crewCollectionView.leftAnchor.constraint(equalTo: crewContainer.leftAnchor),
-            crewCollectionView.rightAnchor.constraint(equalTo: crewContainer.rightAnchor),
-            crewCollectionView.bottomAnchor.constraint(equalTo: crewContainer.bottomAnchor)
+            crewCollectionView.topAnchor.constraint(equalTo: crewGuide.topAnchor),
+            crewCollectionView.leftAnchor.constraint(equalTo: crewGuide.leftAnchor),
+            crewCollectionView.rightAnchor.constraint(equalTo: crewGuide.rightAnchor),
+            crewCollectionView.bottomAnchor.constraint(equalTo: crewGuide.bottomAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            similarLabel.topAnchor.constraint(equalTo: crewContainer.bottomAnchor, constant: 40),
+            similarLabel.topAnchor.constraint(equalTo: crewGuide.bottomAnchor, constant: 40),
             similarLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
             similarLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -20),
         ])
         NSLayoutConstraint.activate([
-            similarContainer.topAnchor.constraint(equalTo: similarLabel.bottomAnchor, constant: 12),
-            similarContainer.leftAnchor.constraint(equalTo: content.leftAnchor),
-            similarContainer.rightAnchor.constraint(equalTo: content.rightAnchor),
-            similarContainer.heightAnchor.constraint(equalToConstant: 125),
+            similarGuide.topAnchor.constraint(equalTo: similarLabel.bottomAnchor, constant: 12),
+            similarGuide.leftAnchor.constraint(equalTo: content.leftAnchor),
+            similarGuide.rightAnchor.constraint(equalTo: content.rightAnchor),
+            similarGuide.heightAnchor.constraint(equalToConstant: 180),
         ])
         NSLayoutConstraint.activate([
-            whereLabel.topAnchor.constraint(equalTo: similarContainer.bottomAnchor, constant: 40),
+            similarCollectionView.topAnchor.constraint(equalTo: similarGuide.topAnchor),
+            similarCollectionView.leftAnchor.constraint(equalTo: similarGuide.leftAnchor),
+            similarCollectionView.rightAnchor.constraint(equalTo: similarGuide.rightAnchor),
+            similarCollectionView.bottomAnchor.constraint(equalTo: similarGuide.bottomAnchor)
+        ])
+        
+        
+        NSLayoutConstraint.activate([
+            whereLabel.topAnchor.constraint(equalTo: similarGuide.bottomAnchor, constant: 40),
             whereLabel.leftAnchor.constraint(equalTo: content.leftAnchor, constant: 24),
             whereLabel.rightAnchor.constraint(equalTo: content.rightAnchor, constant: -20),
         ])
@@ -399,7 +430,13 @@ class MovieDetailsVC: BaseVC {
             DispatchQueue.main.async {
                 self.crewCollectionView.reloadData()
             }
-            
+        })
+        
+        viewModel?.similarFilms.bind({ [weak self] similarFilms in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.similarCollectionView.reloadData()
+            }
         })
     }
 }
@@ -409,18 +446,20 @@ extension MovieDetailsVC : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch collectionView.tag {
-        case 100:
-            return viewModel?.crew.value?.count ?? 0
+        case 200:
+            return viewModel?.similarFilms.value?.count ?? 0
         default:
-            return 0
+            return viewModel?.crew.value?.count ?? 0
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch collectionView.tag {
         case 200:
-            print("To be implemented…")
-            return UICollectionViewCell()
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.similarCollectionViewCellID, for: indexPath) as! SimilarFilmsCell
+            guard let currentItem = viewModel?.similarFilms.value?[indexPath.row] else { return UICollectionViewCell() }
+            cell.set(item: currentItem)
+            return cell
         default:
             // Crew
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.crewCollectionViewCellID, for: indexPath) as! MovieCrewCell
@@ -435,17 +474,17 @@ extension MovieDetailsVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         switch collectionView.tag {
         case 200:
-            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            return UIEdgeInsets(top: 4.0, left: 24.0, bottom: 4.0, right: 4.0)
         default:
             // Crew
-            return UIEdgeInsets(top: 4.0, left: 4.0, bottom: 4.0, right: 4.0)
+            return UIEdgeInsets(top: 4.0, left: 24.0, bottom: 4.0, right: 4.0)
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch collectionView.tag {
         case 200:
-            return CGSize(width: 0, height: 0)
+            return CGSize(width: 100, height: 180)
         default:
             // Crew
             return CGSize(width: 100, height: 125)

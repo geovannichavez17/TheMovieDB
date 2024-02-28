@@ -13,7 +13,7 @@ class MovieDetailsViewModel {
     var movie: Observable<Movie> = Observable(nil)
     var videos: Observable<Videos> = Observable(nil)
     var crew: Observable<[Cast]> = Observable(nil)
-    var similar: Observable<Similar> = Observable(nil)
+    var similarFilms: Observable<[SimilarResult]> = Observable(nil)
     var watchProviders: Observable<WatchProviders> = Observable(nil)
     var isLoading: Observable<Bool> = Observable(false)
     
@@ -41,7 +41,7 @@ class MovieDetailsViewModel {
                 print(response)
                 self.videos.value = response.videos
                 self.crew.value = response.credits.cast
-                self.similar.value = response.similar
+                self.similarFilms.value = response.similar.similarResults
                 self.watchProviders.value = response.watchProviders
             case .failure(let failure):
                 print("error al obtener detalles")

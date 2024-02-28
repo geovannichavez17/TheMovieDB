@@ -209,6 +209,15 @@ extension MoviesVC: UICollectionViewDelegate {
     }
 }
 
+extension MoviesVC: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        if position > (gridCollectionView.contentSize.height-100 - gridCollectionView.frame.size.height) {
+            print("fetch more data")
+        }
+    }
+}
+
 
 
 import SwiftUI

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class MovieDetailsViewModel {
     
@@ -56,7 +57,7 @@ class MovieDetailsViewModel {
                 
                 for video in trailers {
                     let thumbnailUrl = "\(Constants.APIs.youTubeThumbnailUrl)/\(video.key ?? "")/\(Constants.APIs.thumbnailResolution)"
-                    let newItem = VideoThumbnail(title: video.name, thumbnailUrl: thumbnailUrl)
+                    let newItem = VideoThumbnail(title: video.name, thumbnailUrl: thumbnailUrl, videoKey: video.key)
                     thumbnailsUrls?.append(newItem)
                 }
                 self.videoItems.value = thumbnailsUrls
@@ -65,6 +66,17 @@ class MovieDetailsViewModel {
             case .failure(let failure):
                 print("error al obtener detalles")
             }
+        }
+    }
+    
+    func playTrailerVideo(videoKey: String) {
+        guard let youtubeURL = URL(string: "\(Constants.APIs.youTubeAppLink)\(videoKey)") else { return }
+        
+        if UIApplication.shared.canOpenURL(youtubeURL) {
+            UIApplication.shared.open(youtubeURL, options: [:], completionHandler: nil)
+        } else {
+            guard let webUrl = URL(string: "\(Constants.APIs.youTubeUrl)\(videoKey)") else { return }
+            UIApplication.shared.open(webUrl, options: [:], completionHandler: nil)
         }
     }
 }

@@ -36,6 +36,8 @@ struct Constants {
         static let youTubeThumbnailUrl = "http://img.youtube.com/vi"
         static let thumbnailResolution = "sddefault.jpg"
         static let youTubeApiKey = "AIzaSyAVgq_STlzDgmh2bi0IRCRNvuUh3yzIGag"
+        static let youTubeAppLink = "youtube://www.youtube.com/watch?v="
+        static let youTubeUrl =  "https://www.youtube.com/watch?v="
         
         /*static let auth_token = "\(baseUrl)/authentication/token/new?api_key=\(apiKey)"
         static let signin = "\(baseUrl)/authentication/token/validate_with_login?api_key=\(apiKey)"

@@ -626,6 +626,16 @@ extension MovieDetailsVC: UICollectionViewDelegateFlowLayout {
     }
 }
 
+extension MovieDetailsVC: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView.tag == 600 {
+            guard let currentItem = viewModel?.videoItems.value?[indexPath.row] else { return }
+            viewModel?.playTrailerVideo(videoKey: currentItem.videoKey ?? "")
+        }
+    }
+}
+
+
 
 import SwiftUI
 struct DetailsPreviews: PreviewProvider {
